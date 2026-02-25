@@ -1,0 +1,58 @@
+﻿@using Enterprise_E_Commerce_Management_System.ViewModels.Role
+@model RoleListViewModel
+
+@{
+    ViewBag.Title = "Roles";
+}
+
+<partial name="_Notifications"> 
+
+<a asp-action="Form" class="btn btn-primary mb-3">
+    Create New Role
+</a> 
+<div class="table-wrapper">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Permission Count</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @if (Model.Roles != null && Model.Roles.Any())
+            {
+                foreach (var role in Model.Roles)
+                {
+                    <tr>
+                        <td>@role.Name</td>
+                        <td>@role.PermissionCount</td>
+                        <td>
+                            <a asp-action="Form"
+                               asp-route-roleId="@role.Id"
+                               class="btn btn-sm btn-outline-primary">
+                                Edit
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="3">No roles available</td>
+                </tr>
+            }
+        </tbody>
+
+        <tfoot>
+            <tr>
+                <td colspan="3">
+                    Total Count: <strong>@Model.Count</strong>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+

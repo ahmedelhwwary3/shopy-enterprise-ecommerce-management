@@ -1,0 +1,70 @@
+﻿@using Enterprise_E_Commerce_Management_System.ViewModels.Account
+@model LoginViewModel
+
+@{
+    ViewBag.Title = "Login";
+    string submitName = "Log In";
+}
+<style>
+        .app-wrapper {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+    }
+
+    .login-card {
+        width: 360px;   
+        height: auto; 
+    }
+
+        .login-card .card-body {
+            padding: 1.5rem;
+        }
+
+
+</style>
+<partial name="_Notifications" />
+<div class="app-wrapper d-flex justify-content-center">
+
+    <div class="card shadow-sm login-card">
+
+        <div class="card-header bg-light text-center">
+            <h5 class="mb-0">Login</h5>
+        </div>
+
+        <div class="card-body"> 
+            <form asp-action="Login" asp-controller="Account">
+
+                <div class="mb-3">
+                    <label asp-for="UserName" class="form-label"></label>
+                    <input asp-for="UserName" class="form-control" />
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Password" class="form-label"></label>
+                    <input asp-for="Password" type="password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <div class="form-check mb-3">
+                    <input asp-for="RememberMe" class="form-check-input" />
+                    <label asp-for="RememberMe" class="form-check-label"></label>
+                </div>
+
+                <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+                <div class="form-actions">
+                    <input type="submit"
+                           value="@submitName"
+                           class="btn btn-success w-100" />
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<partial name="_ValidationScriptsPartial" />

@@ -1,0 +1,19 @@
+﻿@using Enterprise_E_Commerce_Management_System.ViewModels.Error
+@model ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<h2>Sorry</h2>
+<p>@ViewBag.Message</p>
+
+<div class="card-footer">
+    <div class="form-actions">
+        <a class="btn btn-back"
+           asp-action="Index"
+           asp-controller="Shopping"
+           class="btn btn-sm btn-outline-secondary">
+            Back to Home
+        </a>
+    </div>
+</div>

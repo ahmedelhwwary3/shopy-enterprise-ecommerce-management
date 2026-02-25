@@ -1,0 +1,50 @@
+﻿@using Enterprise_E_Commerce_Management_System.ViewModels.Courier;
+@model EditCouierViewModel
+@{
+	ViewBag.Title = "Register Courier";
+	var countryList = new SelectList(Model.Countries, "Id", "Name");
+	var providerList = new SelectList(Model.Providers, "Id", "Name");
+	string submitName = "Save";
+}
+<div class="container mt-4">
+    <div class="card shadow-sm">
+		<div class="card-body">
+			<!--Edit Button + BackToList Button-->
+			<form asp-action="Edit" asp-controller="Courier">
+
+				<div>
+					<label asp-for="CountryId" class="form-label"></label>
+					<select asp-for="CountryId" class="form-select"
+							asp-items="@countryList">
+					</select>
+				</div>
+
+				<div>
+					<label asp-for="ShippingProviderId" class="form-label"></label>
+					<select asp-for="ShippingProviderId" class="form-select"
+							asp-items="@providerList">
+					</select>
+				</div>
+
+				<div>
+					<input asp-for="Id" type="hidden" />
+				</div>
+
+				<div class="form-actions">
+					<a class="btn btn-outline-secondary" asp-action="Index">
+						Back to List
+					</a>
+					<div>
+						<input type="submit" value="@submitName" class="btn btn-success" />
+					</div>
+				</div>
+				<div asp-validation-summary="All" class="text-danger mt-3"></div>
+			</form>
+
+        </div>
+    </div>
+</div>
+
+
+
+<partial name="_ValidationScriptsPartial"> 

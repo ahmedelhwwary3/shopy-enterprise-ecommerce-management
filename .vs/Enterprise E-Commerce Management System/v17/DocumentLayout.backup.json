@@ -1,0 +1,41 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "F:\\Enterprise E-Commerce Management System\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{8ED3445A-0609-47DF-A309-CA28E89195C7}|Enterprise E-Commerce Management System.csproj|f:\\enterprise e-commerce management system\\application\\users\\applicationuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8ED3445A-0609-47DF-A309-CA28E89195C7}|Enterprise E-Commerce Management System.csproj|solutionrelative:application\\users\\applicationuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 57,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{eefa5220-e298-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ApplicationUserService.cs",
+              "DocumentMoniker": "F:\\Enterprise E-Commerce Management System\\Application\\Users\\ApplicationUserService.cs",
+              "RelativeDocumentMoniker": "Application\\Users\\ApplicationUserService.cs",
+              "ToolTip": "F:\\Enterprise E-Commerce Management System\\Application\\Users\\ApplicationUserService.cs",
+              "RelativeToolTip": "Application\\Users\\ApplicationUserService.cs",
+              "ViewState": "AgIAAKwAAAAAAAAAAAAgwLsAAABDAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-21T22:39:08.498Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

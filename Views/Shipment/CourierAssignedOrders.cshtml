@@ -1,0 +1,165 @@
+﻿@using Enterprise_E_Commerce_Management_System.ViewModels.Shipment
+@model AssignedShipmentPagedListViewModel
+
+@{
+    ViewData["Title"] = "Order Shipment";
+}
+
+<partial name="_Notifications"> 
+<!-- Search / Filters -->
+<div class="d-flex justify-content-center my-4 px-3">
+    <form asp-action="CourierAssignedOrders"
+          method="get"
+          class="card p-3 search-box">
+
+        <div class="row g-3 align-items-end">
+
+            <div class="col-md-4">
+                <label asp-for="Filter.Search" class="form-label"></label>
+                <input asp-for="Filter.Search"
+                       class="form-control"
+                       placeholder="Order number, customer name" />
+            </div>
+
+            <div class="col-md-3">
+                <label asp-for="Filter.ShipmentStatus" class="form-label">Shipment Status</label>
+                <select asp-for="Filter.ShipmentStatus"
+                        class="form-select"
+                        onchange="this.form.submit()">
+                    <option value="">All</option>
+                    <option value="@enShippingStatus.AssignedForCourier">Assigned For Courier</option>
+                    <option value="@enShippingStatus.ShippingFailed">Shipping Failed</option>
+                    <option value="@enShippingStatus.Shipped">Shipped</option>
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <button type="submit"
+                        class="btn btn-primary w-100">
+                    Search
+                </button>
+            </div>
+
+        </div>
+
+        <!-- Page (hidden – pagination only controls it) -->
+        <input type="hidden" asp-for="Filter.Page" />
+    </form>
+</div>
+
+<!-- Table -->
+<div class="table-wrapper wide-table-wrapper">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <!-- ترتيب مريح -->
+                <th>Order Number</th>
+                <th>Customer Name</th>
+                <th>City</th>
+                <th>Amount</th>
+                <th>Shipment Status</th>
+                <th>Order Status</th>
+                <th>Assigned Date</th>
+                <th>Delivery Date</th>
+                <th>Return</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @if (Model.Orders != null && Model.Orders.Any())
+            {
+                foreach (var order in Model.Orders)
+                {
+                    <tr>
+                        <td>@order.OrderNumber</td>
+                        <td>@order.FullName</td>
+                        <td>@order.City</td>
+                        <td>@order.Amount.ToString("N2") @Model.CurrencyCode</td>
+                        <td>@order.ShipmentStatus</td>
+                        <td>@order.OrderStatus</td>
+                        <td>@order.AssignedDate</td>
+                        <td>@order.DeliveredDate</td>
+                        <td>@order.IsReturn</td>
+                        <td>
+                            @if (order.OrderStatus == enOrderStatus.InDelivery &&
+                            order.ShipmentStatus==enShippingStatus.AssignedForCourier)
+                            {
+                                <a asp-action="Confirm"
+                                   asp-controller="Shipment"
+                                   asp-route-ShipmentId="@order.ShipmentId"
+                                   class="btn btn-sm btn-outline-primary">
+                                    Confirm
+                                </a>
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="10">No shipments found</td>
+                </tr>
+            }
+        </tbody>
+
+        <tfoot>
+            <tr>
+                <td colspan="10">
+                    Total Count: <strong>@Model.Count</strong>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+
+<!-- Pagination -->
+@if (Model.Count > Model.Filter.PageSize)
+{
+    var totalPages = (int)Math.Ceiling(Model.Count / (double)Model.Filter.PageSize);
+
+    <div class="pagination-wrapper mt-4 d-flex justify-content-center">
+        <nav class="pagination  " aria-label="Assigned Shipments Pagination">
+            <ul role="list">
+
+                <!-- Prev -->
+                <li>
+                    <a class="pg-btn @(Model.Filter.Page <= 1 ? "disabled" : "")"
+                       asp-action="Management"
+                       asp-route-Filter.Page="@(Model.Filter.Page - 1)"
+                       asp-route-Filter.Search="@Model.Filter.Search"
+                       asp-route-Filter.ShipmentStatus="@Model.Filter.ShipmentStatus" >
+                        Prev
+                    </a>
+                </li>
+
+                @for (int i = 1; i <= totalPages; i++)
+                {
+                    <li>
+                        <a class="pg-btn @(i == Model.Filter.Page ? "is-active" : "")"
+                           asp-action="Management"
+                           asp-route-Filter.Page="@i"
+                           asp-route-Filter.Search="@Model.Filter.Search"
+                           asp-route-Filter.ShipmentStatus="@Model.Filter.ShipmentStatus" >
+                            @i
+                        </a>
+                    </li>
+                }
+
+                <!-- Next -->
+                <li>
+                    <a class="pg-btn @(Model.Filter.Page >= totalPages ? "disabled" : "")"
+                       asp-action="Management"
+                       asp-route-Filter.Page="@(Model.Filter.Page + 1)"
+                       asp-route-Filter.Search="@Model.Filter.Search"
+                       asp-route-Filter.ShipmentStatus="@Model.Filter.ShipmentStatus" >
+                        Next
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+    </div>
+}

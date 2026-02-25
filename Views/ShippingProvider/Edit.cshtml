@@ -1,0 +1,41 @@
+﻿@using Enterprise_E_Commerce_Management_System.ViewModels.ShippingProvider;
+@model ShippingProviderFormViewModel
+@{
+	ViewBag.Title = "Edit Shipping Provider";
+	string changeStatus = Model.IsActive ? "Deactivate" : "Reactivate";
+} 
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+
+        <partial name="_ShippingProviderForm">
+
+        <div class="mt-3 text-start">
+            <form id="toggleShippingProviderForm-@Model.Id"
+                  asp-action="ChangeActivityStatus"
+                  method="post"
+                  style="display:none;"
+                  onsubmit="return confirm('Are you sure you want to @changeStatus this Shipping Provider?')">
+
+                @Html.AntiForgeryToken()
+                <input type="hidden"
+                       name="ShippingProviderId"
+                       value="@Model.Id" />
+            </form>
+
+            <button type="button"
+                    class="btn btn-sm btn-outline-warning"
+                    onclick="document.getElementById('toggleShippingProviderForm-@Model.Id').submit();">
+                @changeStatus
+            </button>
+        </div>
+
+    </div>
+</div> 
+
+@section Scripts {
+	<partial name="_ValidationScriptsPartial"> 
+}
+
+
+ 

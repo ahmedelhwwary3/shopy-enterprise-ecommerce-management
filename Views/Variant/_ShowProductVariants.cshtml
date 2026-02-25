@@ -1,0 +1,49 @@
+﻿@using Enterprise_E_Commerce_Management_System.ViewModels.Variant
+@model VariantListViewModel
+<div class="table-wrapper">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>SKU</th>
+                <th>Status</th>
+                <th>Stock</th>
+                <th>Price</th>
+                <th>Cost</th>
+                <th>Profit</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @if (Model.Variants != null && Model.Variants.Any())
+            {
+                foreach (var v in Model.Variants)
+                {
+                    <tr>
+                        <td>@v.SKU</td>
+                        <td>@v.Status</td>
+                        <td>@v.StockQuantity</td>
+                        <td>@v.Price.ToString("N2") @Model.CurrencyCode</td>
+                        <td>@v.Cost.ToString("N2") @Model.CurrencyCode</td>
+                        <td>@v.Profit.ToString("N2") @Model.CurrencyCode</td>
+                        <td>
+                            <div class="table-actions">
+                                <a asp-action="Form"
+                                   asp-route-Id="@v.Id"
+                                   class="btn btn-sm btn-outline-primary">
+                                    Edit
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="7">No variants found</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div> 

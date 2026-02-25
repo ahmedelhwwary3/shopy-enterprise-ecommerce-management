@@ -1,0 +1,162 @@
+﻿@using Enterprise_E_Commerce_Management_System.ViewModels.Order
+@model OrderDetailsViewModel
+
+@{
+    ViewData["Title"] = "Order Details";
+}
+
+<div class="app-wrapper">
+
+    <partial name="_Notifications" />
+
+    <div class="card shadow-sm">
+
+        <div class="card-header bg-light">
+            <h5 class="mb-0">Order Details</h5>
+        </div>
+
+        <div class="card-body">
+            <div class="row g-3">
+
+                <!-- ================= Courier ================= -->
+                @if (Model.CourierId > 0)
+                {
+                    <div class="col-12">
+                        <div class="detail-item">
+                            <div class="detail-label">Courier</div>
+                            <div class="detail-value">@Model.CourierUserName</div>
+                        </div>
+                    </div>
+                }
+
+                <!-- ================= Order ================= -->
+                <div class="col-md-4">
+                    <div class="detail-item">
+                        <div class="detail-label">Order Number</div>
+                        <div class="detail-value">@Model.OrderNumber</div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="detail-item">
+                        <div class="detail-label">Order Date</div>
+                        <div class="detail-value">
+                            @Model.OrderDate.ToString("dd/MM/yyyy")
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="detail-item">
+                        <div class="detail-label">Amount</div>
+                        <div class="detail-value">
+                            @Model.Amount.ToString("C")
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ================= Customer ================= -->
+                <div class="col-md-6">
+                    <div class="detail-item">
+                        <div class="detail-label">Full Name</div>
+                        <div class="detail-value">@Model.FullName</div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="detail-item">
+                        <div class="detail-label">Phone Number</div>
+                        <div class="detail-value">@Model.PhoneNumber</div>
+                    </div>
+                </div>
+
+                <!-- ================= Address ================= -->
+                <div class="col-md-6">
+                    <div class="detail-item">
+                        <div class="detail-label">Country</div>
+                        <div class="detail-value">@Model.Country</div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="detail-item">
+                        <div class="detail-label">City</div>
+                        <div class="detail-value">@Model.City</div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="detail-item">
+                        <div class="detail-label">Street</div>
+                        <div class="detail-value">@Model.Street</div>
+                    </div>
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(Model.PostalCode))
+                {
+                    <div class="col-md-6">
+                        <div class="detail-item">
+                            <div class="detail-label">Postal Code</div>
+                            <div class="detail-value">@Model.PostalCode</div>
+                        </div>
+                    </div>
+                }
+
+                <!-- ================= Status ================= -->
+                <div class="col-md-6">
+                    <div class="detail-item">
+                        <div class="detail-label">Order Status</div>
+                        <span class="badge bg-primary">
+                            @Model.OrderStatus
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="detail-item">
+                        <div class="detail-label">Shipment Status</div>
+                        <span class="badge bg-secondary">
+                            @Model.ShipmentStatus
+                        </span>
+                    </div>
+                </div>
+
+                @if (Model.PaymentMethod.HasValue)
+                {
+                    <div class="col-md-6">
+                        <div class="detail-item">
+                            <div class="detail-label">Payment Method</div>
+                            <div class="detail-value">@Model.PaymentMethod</div>
+                        </div>
+                    </div>
+                }
+
+                @if (Model.PaymentStatus.HasValue)
+                {
+                    <div class="col-md-6">
+                        <div class="detail-item">
+                            <div class="detail-label">Payment Status</div>
+                            <span class="badge bg-success">
+                                @Model.PaymentStatus
+                            </span>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+
+        <!-- ================= Actions ================= -->
+        <div class="card-footer">
+            <div class="form-actions">
+                <a class="btn btn-back"
+                   asp-action="ManageAssignedOrders"
+                   asp-controller="Order">
+                    Back to List
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+</div>

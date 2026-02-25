@@ -1,0 +1,31 @@
+﻿@using Enterprise_E_Commerce_Management_System.ViewModels.Variant;
+@model VariantFormViewModel
+@{
+	ViewBag.Title = "Create Variant"; 
+}
+<partial name="_VariantForm"> 
+@section Scripts {
+	<partial name="_ValidationScriptsPartial"> 
+}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        document.querySelectorAll(".variant-attribute").forEach(container => {
+
+            const hiddenInput = container.querySelector(".attribute-value");
+            const buttons = container.querySelectorAll(".color-btn");
+
+            buttons.forEach(btn => {
+                btn.addEventListener("click", function () {
+
+                    buttons.forEach(b => b.classList.remove("active"));
+                    this.classList.add("active");
+
+                    hiddenInput.value = this.dataset.value;
+                });
+            });
+        });
+
+    });
+</script>
+

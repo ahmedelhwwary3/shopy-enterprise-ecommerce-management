@@ -1,0 +1,112 @@
+﻿@using Enterprise_E_Commerce_Management_System.ViewModels.Customer
+@model CustomerDetailsWithCountryListViewModel
+
+@{
+    ViewBag.Title = "Customer Details";
+}
+
+<div class="app-wrapper">
+
+    <div class="card shadow-sm">
+
+        <div class="card-header bg-light">
+            <h5 class="mb-0">Customer Details</h5>
+        </div>
+
+        <div class="card-body">
+            <div class="row g-3">
+
+                <!-- ================= Basic Info ================= -->
+                <div class="col-md-6">
+                    <div class="detail-item">
+                        <div class="detail-label">Customer ID</div>
+                        <div class="detail-value">@Model.Details.Id</div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="detail-item">
+                        <div class="detail-label">Full Name</div>
+                        <div class="detail-value">@Model.FullName</div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="detail-item">
+                        <div class="detail-label">Phone Number</div>
+                        <div class="detail-value">@Model.Details.PhoneNumber</div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="detail-item">
+                        <div class="detail-label">Email</div>
+                        <div class="detail-value">@Model.Details.Email</div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="detail-item">
+                        <div class="detail-label">Status</div>
+                        <span class="badge @(Model.Details.IsActive ? "bg-success" : "bg-secondary")">
+                            @(Model.Details.IsActive ? "Active" : "Inactive")
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="detail-item">
+                        <div class="detail-label">Created Date</div>
+                        <div class="detail-value">@Model.Details.CreatedDate</div>
+                    </div>
+                </div>
+
+                <!-- ================= Address ================= -->
+                <div class="col-12">
+                    <hr />
+                    <h6 class="section-title">Address</h6>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="detail-item">
+                        <div class="detail-label">Country</div>
+                        <div class="detail-value">@Model.Details.Country</div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="detail-item">
+                        <div class="detail-label">City</div>
+                        <div class="detail-value">@Model.Address.City</div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="detail-item">
+                        <div class="detail-label">Postal Code</div>
+                        <div class="detail-value">@Model.Address.PostalCode</div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="detail-item">
+                        <div class="detail-label">Street</div>
+                        <div class="detail-value">@Model.Address.Street</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ================= Actions ================= -->
+        <div class="card-footer d-flex justify-content-end">
+            <a asp-route-Id="@Model.Details.Id"
+               asp-action="Edit"
+               class="btn btn-sm btn-outline-primary">
+                Edit
+            </a>
+        </div>
+
+    </div>
+
+</div>

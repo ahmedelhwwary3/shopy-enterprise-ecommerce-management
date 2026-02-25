@@ -1,0 +1,74 @@
+﻿@using Enterprise_E_Commerce_Management_System.ViewModels.Shipment;
+@model ConfirmShipmentViewModel
+
+@{
+    ViewData["Title"] = "Confirm Shipment";
+    var statusList = new SelectList(Model.ShipmentStatusList, "Value", "Name");
+}
+
+<div class="app-wrapper">
+    <div class="card shadow-sm">
+
+        <!-- ================= Header ================= -->
+        <div class="card-header bg-light">
+            <h5 class="mb-0">Confirm Shipment</h5>
+        </div>
+
+        <!-- ================= Body ================= -->
+        <div class="card-body">
+
+            <!-- Shipment Info -->
+            <ul class="list-group list-group-flush mb-4">
+                <li class="list-group-item">
+                    <strong>Full Name:</strong>
+                    <span class="ms-2">@Model.FullName</span>
+                </li>
+
+                <li class="list-group-item">
+                    <strong>Address:</strong>
+                    <div class="ms-2">
+                        @Model.Country - @Model.City <br />
+                        @Model.Street - @Model.PostalCode
+                    </div>
+                </li>
+
+                <li class="list-group-item">
+                    <strong>Last Status:</strong>
+                    <span class="badge bg-info text-dark ms-2">
+                        @Model.LastStatus
+                    </span>
+                </li>
+            </ul>
+
+            <!-- Confirm Form -->
+            <form asp-action="Confirm" method="post">
+
+                <div class="mb-3 w-50">
+                    <label asp-for="ConfirmStatus" class="form-label">
+                        Confirm Status
+                    </label>
+
+                    <select asp-for="ConfirmStatus"
+                            asp-items="statusList"
+                            class="form-select"> 
+                    </select>
+                </div>
+
+                <input type="hidden" asp-for="ShipmentId" />
+
+                <!-- Actions -->
+                <div class="form-actions d-flex justify-content-between mt-4">
+                    <a class="btn btn-outline-secondary"
+                       asp-action="AvailableOrdersForAssign">
+                        Back to List
+                    </a>
+
+                    <button type="submit" class="btn btn-success">
+                        Confirm
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>

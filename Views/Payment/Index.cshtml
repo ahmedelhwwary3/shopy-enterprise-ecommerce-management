@@ -1,0 +1,176 @@
+﻿@using Enterprise_E_Commerce_Management_System.ViewModels.Payment
+@model PaymentPagedListViewModel
+
+@{
+    ViewBag.Title = "Payments";
+    var countryList = new SelectList(Model.Filter.CountryList, "Id", "Name");
+}
+
+<partial name="_Notifications"></partial>
+
+<!-- Search / Filters -->
+<div class="d-flex justify-content-center my-4 px-3">
+    <form asp-action="Index"
+          method="get"
+          class="card p-3 search-box">
+
+        <div class="row g-3 align-items-end">
+
+            <div class="col-md-3">
+                <label asp-for="Filter.Search" class="form-label"></label>
+                <input asp-for="Filter.Search"
+                       class="form-control"
+                       placeholder="Order number, customer name" />
+            </div>
+
+            <div class="col-md-2">
+                <label asp-for="Filter.PaymentStatus" class="form-label">Status</label>
+                <select asp-for="Filter.PaymentStatus"
+                        class="form-select"
+                        onchange="this.form.submit()">
+                    <option value="">All</option>
+                    <option value="@enPaymentStatus.Pending">Pending</option>
+                    <option value="@enPaymentStatus.Paid">Paid</option>
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <label asp-for="Filter.PaymentMethod" class="form-label">Method</label>
+                <select asp-for="Filter.PaymentMethod"
+                        class="form-select"
+                        onchange="this.form.submit()">
+                    <option value="">All</option>
+                    <option value="@enPaymentMethod.CashOnDelivery">Cash On Delivery</option>
+                </select>
+            </div>
+
+            <div class="col-md-3">
+                <label asp-for="Filter.CountryId" class="form-label">Country</label>
+                <select asp-for="Filter.CountryId"
+                        asp-items="@countryList"
+                        class="form-select"
+                        onchange="this.form.submit()">
+                    <option value="">All</option>
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <button type="submit"
+                        class="btn btn-primary w-100">
+                    Search
+                </button>
+            </div>
+
+        </div>
+
+        <!-- Page (hidden – pagination only) -->
+        <input type="hidden" asp-for="Filter.Page" />
+    </form>
+</div>
+
+<div class="table-wrapper">
+    <!-- Table -->
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <!-- ترتيب مريح -->
+                <th>Order Number</th>
+                <th>Customer Name</th>
+                <th>Country</th>
+                <th>Amount</th>
+                <th>Payment Date</th>
+                <th>Method</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @if (Model.Payments != null && Model.Payments.Any())
+            {
+                foreach (var payment in Model.Payments)
+                {
+                    <tr>
+                        <td>@payment.OrderNumber</td>
+                        <td>@payment.FullName</td>
+                        <td>@payment.CountryName</td>
+                        <td>@payment.Amount.ToString("N2") @Model.CurrencyCode</td>
+                        <td>@payment.PaymentDate</td>
+                        <td>@payment.PaymentMethod</td>
+                        <td>@payment.PaymentStatus</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="7">No payments found</td>
+                </tr>
+            }
+        </tbody>
+
+        <tfoot>
+            <tr>
+                <td colspan="7">
+                    Total Count: <strong>@Model.Count</strong>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+
+<!-- Pagination --> 
+@if (Model.Count > Model.Filter.PageSize)
+{
+    var totalPages = (int)Math.Ceiling(Model.Count / (double)Model.Filter.PageSize);
+    var currentPage = Model.Filter.Page;
+
+    <div class="pagination-wrapper mt-4 d-flex justify-content-center">
+        <nav class="pagination  ">
+            <ul role="list">
+
+                <!-- Prev -->
+                <li>
+                    <a class="pg-btn @(currentPage == 1 ? "disabled" : "")"
+                       asp-action="Index"
+                       asp-route-Filter.Page="@(currentPage<totalPages? currentPage + 1 : totalPages)"
+                       asp-route-Filter.Search="@Model.Filter.Search"
+                       asp-route-Filter.PaymentStatus="@Model.Filter.PaymentStatus"
+                       asp-route-Filter.PaymentMethod="@Model.Filter.PaymentMethod"
+                       asp-route-Filter.CountryId="@Model.Filter.CountryId">
+                        Prev
+                    </a>
+                </li>
+
+                @for (int i = 1; i <= totalPages; i++)
+                {
+                    <li>
+                        <a class="pg-btn @(i == currentPage ? "is-active" : "")"
+                           asp-action="Index"
+                           asp-route-Filter.Page="@(currentPage<totalPages? currentPage + 1 : totalPages)"
+                           asp-route-Filter.Search="@Model.Filter.Search"
+                           asp-route-Filter.PaymentStatus="@Model.Filter.PaymentStatus"
+                           asp-route-Filter.PaymentMethod="@Model.Filter.PaymentMethod"
+                           asp-route-Filter.CountryId="@Model.Filter.CountryId">
+                            @i
+                        </a>
+                    </li>
+                }
+
+                <!-- Next -->
+                <li>
+                    <a class="pg-btn @(currentPage == totalPages ? "disabled" : "")"
+                       asp-action="Index"
+                       asp-route-Filter.Page="@(currentPage<totalPages? currentPage + 1 : totalPages)"
+                       asp-route-Filter.Search="@Model.Filter.Search"
+                       asp-route-Filter.PaymentStatus="@Model.Filter.PaymentStatus"
+                       asp-route-Filter.PaymentMethod="@Model.Filter.PaymentMethod"
+                       asp-route-Filter.CountryId="@Model.Filter.CountryId">
+                        Next
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+    </div>
+} 

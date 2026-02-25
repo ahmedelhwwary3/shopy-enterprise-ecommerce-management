@@ -1,0 +1,27 @@
+﻿@using Enterprise_E_Commerce_Management_System.ViewModels.Role;
+@model RoleFormViewModel
+@{
+	ViewBag.Title = "Edit Role";
+}
+<div class="form-actions">
+
+    <!-- Hidden Delete Form -->
+    <form id="deleteRoleForm-@Model.Id"
+          asp-action="Delete"
+          method="post"
+          onsubmit="return confirm('Are you sure you want to delete this role?')"
+          class="d-none">
+        <input type="hidden" asp-for="Id" />
+    </form>
+
+    <!-- Visible Button -->
+    <button type="button"
+            class="btn btn-sm btn-outline-danger"
+            onclick="document.getElementById('deleteRoleForm-@Model.Id').submit();">
+        Delete
+    </button>
+
+</div>
+
+<partial name="_RoleForm"> 
+<partial name="_ValidationScriptsPartial"> 

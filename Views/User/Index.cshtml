@@ -1,0 +1,253 @@
+﻿@using Enterprise_E_Commerce_Management_System.ViewModels.User;
+@model UserPagedListViewModel
+
+@{
+    ViewBag.Title = "Manage Users";
+}
+
+<partial name="_Notifications"> 
+<!-- Top Actions -->
+<div class="d-flex gap-2 ">
+    <a class="btn btn-primary"
+        asp-action="RegisterUser"
+       asp-controller="Account" >
+        Register User
+    </a>
+
+    <a class="btn btn-primary"
+        asp-action="RegisterCourier"
+       asp-controller="Account" >
+        Register Courier
+    </a>
+</div>
+
+<!-- Search -->
+<div class="d-flex justify-content-center my-4 px-3">
+    <form id="searchForm" class="card p-3 search-box">
+        <div class="row g-3 align-items-end">
+
+            <div class="col-md-3">
+                <label class="form-label">Search</label>
+                <input id="Search"
+                       name="Search"
+                       type="text"
+                       class="form-control"
+                       placeholder="Search by name or email or phone" />
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label">Status</label>
+                <select name="IsActive"
+                        id="IsActive"
+                        class="form-select">
+                    <option value="">All</option>
+                    <option value="true">Active</option>
+                    <option value="false">Inactive</option>
+                </select>
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label">Role</label>
+                <select name="Role"
+                        id="Role"
+                        class="form-select">
+                    <option value="">All</option>
+                    <option value="@enUserRole.Admin">Admin</option>
+                    <option value="@enUserRole.Manager">Manager</option>
+                    <option value="@enUserRole.Staff">Staff</option>
+                    <option value="@enUserRole.Courier">Courier</option>
+                    <option value="@enUserRole.Support">Support</option>
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <button type="button"
+                        id="btnSearch"
+                        class="btn btn-primary w-100">
+                    Search
+                </button>
+            </div>
+
+        </div>
+    </form>
+</div>
+
+<!-- Users Table --> 
+<div class="table-wrapper">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>User Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Permission Count</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody id="userTableBody"></tbody>
+
+        <tfoot id="userTableFooter"></tfoot>
+    </table>
+</div>
+
+
+<!-- Pagination -->
+<div class="pagination-wrapper mt-4 d-flex justify-content-center">
+    <nav class="pagination" aria-label="Users Pagination">
+        <ul id="paginationContainer" role="list"></ul>
+    </nav>
+</div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        /* ===== State ===== */
+        let currentPage = 1;
+        const pageSize = 10;
+
+        const btnSearch = document.getElementById("btnSearch");
+
+        btnSearch.addEventListener("click", function () {
+            currentPage = 1;
+            loadUsers();
+        });
+            // Auto search on dropdown change
+        document.getElementById("IsActive")?.addEventListener("change", function () {
+            currentPage = 1;
+            loadUsers();
+        });
+       
+        document.getElementById("Role")?.addEventListener("change", function () {
+            currentPage = 1;
+            loadUsers();
+        });
+
+        loadUsers();
+
+        /* ===== Load Users ===== */
+        function loadUsers() {
+
+            const status = document.getElementById('IsActive')?.value || "";
+            const search = document.getElementById("Search")?.value || "";
+            const role = document.getElementById("Role")?.value || "";
+
+            const params = new URLSearchParams();
+
+            if (search !== "") params.append("Search", search);
+            if (role !== "") params.append("Role", role);
+            if (status !== "") params.append("IsActive", status);
+
+            params.append("Page", currentPage);
+            params.append("PageSize", pageSize);
+
+            fetch(`/User/Search?${params.toString()}`)
+                .then(res => res.json())
+                .then(result => {
+                    renderTable(result.users);
+                    renderFooter(result.count);
+                    renderPagination(result.count);
+                })
+                .catch(err => console.error(err));
+        }
+
+        /* ===== Render Table ===== */
+        function renderTable(items) {
+
+            const tbody = document.getElementById("userTableBody");
+            tbody.innerHTML = "";
+
+            if (!items || items.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7">No users found</td></tr>`;
+                return;
+            }
+
+            items.forEach(item => {
+
+                const manageColumn = item.role !== "Courier"
+                        ? `<a href="/User/Manage?UserId=${item.id}"
+                              class="btn btn-sm btn-outline-secondary">
+                               Manage
+                           </a>`
+                    : "";
+
+                tbody.insertAdjacentHTML("beforeend", `
+                    <tr>
+                        <td>${item.userName}</td>
+                        <td>${item.email}</td>
+                        <td>${item.role}</td> 
+                        <td>${item.phoneNumber}</td>
+                        <td>${item.status}</td>
+                        <td>${item.permissionCount}</td> 
+                        <td>${manageColumn}</td>
+                    </tr>
+                `);
+            });
+        }
+
+        /* ===== Footer ===== */
+        function renderFooter(count) {
+            document.getElementById("userTableFooter").innerHTML = `
+                <tr>
+                    <td colspan="7">Total users: <strong>${count}</strong></td>
+                </tr>`;
+        }
+
+        /* ===== Pagination ===== */
+        function renderPagination(totalCount) {
+
+            const totalPages = Math.ceil(totalCount / pageSize);
+            const container = document.getElementById("paginationContainer");
+
+            container.innerHTML = "";
+            if (totalPages <= 1) return;
+
+            container.appendChild(
+                createPageButton("Prev", currentPage - 1, currentPage === 1)
+            );
+
+            for (let i = 1; i <= totalPages; i++) {
+                container.appendChild(
+                    createPageButton(i, i, false, i === currentPage)
+                );
+            }
+
+            container.appendChild(
+                createPageButton("Next", currentPage + 1, currentPage === totalPages)
+            );
+        }
+
+        function createPageButton(text, page, disabled = false, active = false) {
+
+            const li = document.createElement("li");
+            const btn = document.createElement("button");
+
+            btn.type = "button";
+            btn.textContent = text;
+
+            if (disabled) btn.disabled = true;
+
+            if (active) {
+                btn.classList.add("is-active");
+                btn.setAttribute("aria-current", "page");
+            }
+
+            btn.addEventListener("click", function (e) {
+                e.preventDefault();
+                if (page < 1 || page === currentPage) return;
+
+                currentPage = page;
+                loadUsers();
+
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            });
+
+            li.appendChild(btn);
+            return li;
+        }
+
+    });
+</script>

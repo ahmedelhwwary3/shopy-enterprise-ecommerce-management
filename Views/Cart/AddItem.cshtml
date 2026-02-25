@@ -1,0 +1,419 @@
+﻿@model ShoppingtDetailsViewModel
+@using Enterprise_E_Commerce_Management_System.ViewModels.ShoppingProducts
+
+@{
+    ViewBag.Title = "Product Details";
+}
+
+@Html.AntiForgeryToken()
+
+<div class="app-wrapper">
+    <div class="card shadow-sm">
+
+        <div class="card-header bg-light">
+            <h5 class="mb-0">@Model.Name</h5>
+            @if (Model.Variants == null || Model.Variants.Count < 1)
+            {
+                <div class="out-of-stock-badge">
+                    Out of Stock 
+                </div>
+            }
+        </div> 
+
+        <div class="card-body">
+            <div class="row g-4 align-items-start">
+
+                <div class="col-md-4 col-lg-3">
+                    <img src="/Images/@Model.ImageName"
+                         alt="@Model.Name"
+                         class="img-fluid rounded border product-image" />
+                </div>
+
+                <div class="col-md-8 col-lg-9">
+
+                    <h6 class="section-title">Choose Options</h6>
+
+                    <div id="attributesContainer" class="mb-3"></div>
+
+                    <div class="variant-info mb-3">
+                        <div id="price"></div>
+                        <div id="stock"></div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Quantity</label>
+                        <input type="number"
+                               id="btnQuantity"
+                               class="form-control w-25"
+                               disabled />
+                    </div>
+
+                    <div id="totalPrice"
+                         class="fw-bold fs-5 text-success border-top pt-2 mt-2">
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= Actions ================= -->
+        <div class="card-footer">
+            <div class="form-actions d-flex justify-content-between align-items-center">
+
+                <a class="btn btn-back"
+                   asp-action="Index"
+                   asp-controller="Shopping">
+                    Back to Home
+                </a>
+
+                <button id="addToCart"
+                        disabled
+                        class="btn btn-success">
+                    Add To Cart
+                </button>
+
+                <a class="d-none btn btn-outline-primary"
+                   id="cartDetails"
+                   asp-controller="Cart"
+                   asp-action="Details"
+                   asp-route-CartId="@Context.Session.GetInt32("CartId")">
+                    View Cart
+                </a>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+
+    // ================= STATE =================
+
+    const allVariants = @Html.Raw(Json.Serialize(Model.Variants));
+    let selectedAttributes = {};
+    let selectedVariant = null;
+
+    const LOW_STOCK_THRESHOLD = 5;
+
+    // ================= ELEMENTS =================
+
+    const attributesContainer = document.getElementById('attributesContainer');
+    const quantityInput = document.getElementById('btnQuantity');
+    const addToCartBtn = document.getElementById('addToCart');
+    const priceLabel = document.getElementById('price');
+    const totalPriceLabel=document.getElementById('totalPrice');
+    const stockLabel = document.getElementById('stock');
+    const cartDetailsBtn = document.getElementById('cartDetails');
+    const currencyCode = "@Model.Code";
+
+    // ================= HELPERS =================
+
+    function variantMatches(v, attrs) {
+        return Object.entries(attrs).every(([key, value]) =>
+            (v.attributes || []).some(a =>
+                a.name.toString().toLowerCase() === key &&
+                a.value.toLowerCase() === value.toLowerCase()
+            )
+        );
+    }
+
+    function getFilteredVariants() {
+        return (allVariants || []).filter(v =>
+            variantMatches(v, selectedAttributes)
+        );
+    }
+
+    function isValueAvailable(attributeKey, value) {
+
+        const tempSelection = { ...selectedAttributes };
+        tempSelection[attributeKey] = value;
+
+        return allVariants.some(v =>
+            variantMatches(v, tempSelection)
+        );
+    }
+
+    function allAttributesSelected(schema) {
+        return schema.every(attr => selectedAttributes[attr.name]);
+    }
+
+    // ================= BUILD SCHEMA =================
+
+    function buildAttributesSchema() {
+
+        const map = {};
+
+        (allVariants || []).forEach(v => {
+            (v.attributes || []).forEach(a => {
+
+                const key = a.name.toString().toLowerCase();
+
+                if (!map[key]) {
+                    map[key] = {
+                        name: key,
+                        nameText: a.nameText,
+                        displayType: a.displayType,
+                        values: new Set()
+                    };
+                }
+
+                map[key].values.add(a.value);
+            });
+        });
+
+        return Object.values(map).map(a => ({
+            ...a,
+            values: Array.from(a.values)
+        }));
+    }
+
+    // ================= RENDER =================
+
+    function renderAttributes() {
+
+        const schema = buildAttributesSchema();
+        attributesContainer.innerHTML = '';
+
+        schema.forEach(attr => {
+
+            const wrapper = document.createElement('div');
+            wrapper.className = 'mb-3';
+
+            const key = attr.name;
+
+            const label = document.createElement('div');
+            label.className = 'fw-bold mb-2';
+            label.innerText = attr.nameText;
+            wrapper.appendChild(label);
+
+            // ===== COLOR =====
+            if (attr.displayType === 3) {
+
+                const row = document.createElement('div');
+                row.className = 'd-flex gap-2 flex-wrap';
+
+                attr.values.forEach(val => {
+
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = 'attribute-circle';
+                    btn.style.background = val;
+
+                    const available = isValueAvailable(key, val);
+
+                    if (!available) {
+                        btn.disabled = true;
+                        btn.style.opacity = "0.4";
+                        btn.style.cursor = "not-allowed";
+                    }
+
+                    if (selectedAttributes[key] === val) {
+                        btn.classList.add('active');
+                    }
+
+                    btn.onclick = () => {
+                        if (!available) return;
+
+                        selectedAttributes[key] = val;
+                        renderAttributes();
+                        resolveVariant();
+                    };
+
+                    row.appendChild(btn);
+                });
+
+                wrapper.appendChild(row);
+            }
+            else {
+
+                const select = document.createElement('select');
+                select.className = 'form-select w-50';
+
+                // 👇 Default disabled option
+                const defaultOption = document.createElement('option');
+                defaultOption.value = "";
+                defaultOption.text = "-- Select --";
+                defaultOption.disabled = true;
+                defaultOption.selected = !selectedAttributes[key];
+                select.appendChild(defaultOption);
+
+                attr.values.forEach(val => {
+
+                    const opt = document.createElement('option');
+                    opt.value = val;
+                    opt.text = val;
+
+                    const available = isValueAvailable(key, val);
+
+                    if (!available) {
+                        opt.disabled = true;
+                    }
+
+                    if (selectedAttributes[key] === val) {
+                        opt.selected = true;
+                    }
+
+                    select.appendChild(opt);
+                });
+
+                select.onchange = e => {
+
+                    if (!e.target.value) {
+                        delete selectedAttributes[key];
+                    } else {
+                        selectedAttributes[key] = e.target.value;
+                    }
+
+                    renderAttributes();
+                    resolveVariant();
+                };
+
+                wrapper.appendChild(select);
+            }
+
+            attributesContainer.appendChild(wrapper);
+        });
+    }
+
+    // ================= RESOLVE =================
+
+    function resolveVariant() {
+
+        const schema = buildAttributesSchema();
+
+        if (!allAttributesSelected(schema)) {
+
+            selectedVariant = null;
+
+            priceLabel.innerText = '';
+            stockLabel.innerText = '';
+            totalPriceLabel.innerText ='';
+
+            quantityInput.disabled = true;
+            addToCartBtn.disabled = true;
+            return;
+        }
+
+        const matched = getFilteredVariants();
+
+        if (matched.length === 1) {
+
+            selectedVariant = matched[0];
+
+                const stock = selectedVariant.stockQuantity;
+
+                const price = parseFloat(selectedVariant.price) || 0;
+                const quantity = parseInt(quantityInput.value) || 1;
+
+                const totalPrice = price * quantity;
+
+                priceLabel.innerText =
+                    `Price: ${price.toFixed(2)} ${currencyCode}`;
+
+                totalPriceLabel.innerText =
+                    `Total Price: ${totalPrice.toFixed(2)} ${currencyCode}`;
+
+            if (stock <= LOW_STOCK_THRESHOLD && stock > 0) {
+                stockLabel.innerHTML =
+                    `<span class="text-danger fw-bold">Only ${stock} left!</span>`;
+            }
+            else if (stock === 0) {
+                stockLabel.innerHTML =
+                    `<span class="text-danger fw-bold">Out of stock</span>`;
+            }
+            else {
+                stockLabel.innerText = `Stock: ${stock}`;
+            }
+
+            if (stock > 0) {
+
+                quantityInput.disabled = false;
+                addToCartBtn.disabled = false;
+
+                quantityInput.min = 1;
+                quantityInput.max = stock;
+                quantityInput.value = 1;
+            }
+            else {
+
+                quantityInput.disabled = true;
+                addToCartBtn.disabled = true;
+            }
+        }
+        else {
+
+            selectedVariant = null;
+
+            priceLabel.innerText = '';
+            stockLabel.innerText = '';
+            totalPriceLabel.innerText = '';
+
+            quantityInput.disabled = true;
+            addToCartBtn.disabled = true;
+        }
+    }
+
+    // ================= QUANTITY VALIDATION =================
+
+    quantityInput.addEventListener('input', function () {
+
+        let value = parseInt(this.value) || 1;
+        const max = parseInt(this.max) || 1;
+
+        if (value < 1) value = 1;
+        if (value > max) value = max;
+
+        this.value = value;
+            if (selectedVariant) {
+        const price = parseFloat(selectedVariant.price) || 0;
+        const quantity = parseInt(this.value) || 1;
+        const total = price * quantity;
+
+        totalPriceLabel.innerText =
+            `Total Price: ${total.toFixed(2)} ${currencyCode}`;
+    }
+    });
+
+    // ================= ADD TO CART =================
+
+    addToCartBtn.addEventListener('click', async function (e) {
+
+        e.preventDefault();
+        if (!selectedVariant) return;
+
+        const token =
+            document.querySelector('input[name="__RequestVerificationToken"]').value;
+
+        try {
+
+            const response = await fetch('/Cart/AddItem', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': token
+                },
+                body: JSON.stringify({
+                    variantId: selectedVariant.id,
+                    quantity: parseInt(quantityInput.value) || 1
+                })
+            });
+
+            if (response.ok) {
+                cartDetailsBtn.classList.remove('d-none');
+                addToCartBtn.disabled = true;
+            }
+
+        } catch (err) {
+            console.error(err);
+        }
+    });
+
+    // ================= INIT =================
+
+    renderAttributes();
+    resolveVariant();
+
+</script>
+
+

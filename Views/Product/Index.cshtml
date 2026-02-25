@@ -1,0 +1,227 @@
+﻿@using Enterprise_E_Commerce_Management_System.Models.Products 
+@using Enterprise_E_Commerce_Management_System.ViewModels.UserProducts;
+@model ProductPageViewModel
+
+@{
+    ViewBag.Title = "Products";
+    var cateoryList = new SelectList(Model.Categories, "Id", "Name");
+}
+
+<partial name="_Notifications"> 
+
+<a asp-action="Form" class="btn btn-primary mb-3">
+    Create New Product
+</a>
+
+<!-- Search -->
+<div class="d-flex justify-content-center my-4 px-3">
+    <form class="card p-3 search-box">
+        <div class="row g-3 align-items-end">
+
+            <div class="col-md-3">
+                <label class="form-label">Name</label>
+                <input id="Name"
+                       class="form-control"
+                       placeholder="Search by name" />
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label">Category</label>
+                <select id="CategoryId"
+                        class="form-select"
+                        asp-items="cateoryList">
+                    <option value="">All</option>
+                </select>
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label">Status</label>
+                <select id="IsActive" class="form-select">
+                    <option value="">All</option>
+                    <option value="true">Active</option>
+                    <option value="false">Inactive</option>
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <button type="button"
+                        id="btnSearch"
+                        class="btn btn-primary w-100">
+                    Search
+                </button>
+            </div>
+
+        </div>
+    </form>
+</div>
+
+<div class="table-wrapper">
+    <!-- Table -->
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Status</th>
+                <th>Create Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody id="productTableBody"></tbody>
+
+        <tfoot id="productTableFooter"></tfoot>
+    </table>
+</div>
+
+
+<!-- Pagination -->
+<div class="pagination-wrapper mt-4 d-flex justify-content-center">
+    <nav class="pagination  " aria-label="Products Pagination">
+        <ul id="paginationContainer" role="list"></ul>
+    </nav>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        /* ===== State ===== */
+        let currentPage = 1;
+        const pageSize = 10;
+
+        const btnSearch = document.getElementById("btnSearch");
+
+        btnSearch.addEventListener("click", function () {
+            currentPage = 1;
+            loadProducts();
+        });
+
+        // Auto search on dropdown change
+        document.getElementById("CategoryId")?.addEventListener("change", resetAndSearch);
+        document.getElementById("IsActive")?.addEventListener("change", resetAndSearch);
+
+        function resetAndSearch() {
+            currentPage = 1;
+            loadProducts();
+        }
+
+        loadProducts();
+
+        /* ===== Load Products ===== */
+        function loadProducts() {
+
+            const categoryId = document.getElementById("CategoryId")?.value || "";
+            const status = document.getElementById("IsActive")?.value || "";
+            const name = document.getElementById("Name")?.value || "";
+
+            const params = new URLSearchParams();
+
+            if (categoryId) params.append("CategoryId", categoryId);
+            if (name) params.append("Name", name);
+            if (status !== "") params.append("IsActive", status);
+
+            params.append("Page", currentPage);
+            params.append("PageSize", pageSize);
+
+            fetch(`/Product/Search?${params.toString()}`)
+                .then(res => res.json())
+                .then(result => {
+                    renderTable(result.products);
+                    renderFooter(result.count);
+                    renderPagination(result.count);
+                })
+                .catch(err => console.error(err));
+        }
+
+        /* ===== Render Table ===== */
+        function renderTable(items) {
+
+            const tbody = document.getElementById("productTableBody");
+            tbody.innerHTML = "";
+
+            if (!items || items.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6">No products found</td></tr>`;
+                return;
+            }
+
+            items.forEach(item => {
+                tbody.insertAdjacentHTML("beforeend", `
+                    <tr>
+                      <td>${item.name}</td>
+                        <td>${item.category}</td>
+                        <td>${item.status}</td>
+                        <td>${item.createDate}</td> 
+                        <td>
+                            <a href="/Product/Form/${item.id}"
+                               class="btn btn-sm btn-outline-primary">
+                                Edit
+                            </a>
+                        </td>
+                    </tr>
+                `);
+            });
+        }
+
+        /* ===== Footer ===== */
+        function renderFooter(count) {
+            document.getElementById("productTableFooter").innerHTML = `
+                <tr>
+                    <td colspan="6">Total Products: <strong>${count}</strong></td>
+                </tr>`;
+        }
+
+        /* ===== Pagination ===== */
+        function renderPagination(totalCount) {
+
+            const totalPages = Math.ceil(totalCount / pageSize);
+            const container = document.getElementById("paginationContainer");
+
+            container.innerHTML = "";
+            if (totalPages <= 1) return;
+
+            container.appendChild(
+                createPageButton("Prev", currentPage - 1, currentPage === 1)
+            );
+
+            for (let i = 1; i <= totalPages; i++) {
+                container.appendChild(
+                    createPageButton(i, i, false, i === currentPage)
+                );
+            }
+
+            container.appendChild(
+                createPageButton("Next", currentPage + 1, currentPage === totalPages)
+            );
+        }
+
+        function createPageButton(text, page, disabled = false, active = false) {
+
+            const li = document.createElement("li");
+            const btn = document.createElement("button");
+
+            btn.type = "button";
+            btn.textContent = text;
+
+            if (disabled) btn.disabled = true;
+
+            if (active) {
+                btn.classList.add("is-active");
+                btn.setAttribute("aria-current", "page");
+            }
+
+            btn.addEventListener("click", function (e) {
+                e.preventDefault();
+                if (page < 1 || page === currentPage) return;
+
+                currentPage = page;
+                loadProducts();
+
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            });
+
+            li.appendChild(btn);
+            return li;
+        }
+
+    });
+</script>

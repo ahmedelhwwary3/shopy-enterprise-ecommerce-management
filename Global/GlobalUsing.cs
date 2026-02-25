@@ -1,0 +1,17 @@
+﻿global using Enterprise_E_Commerce_Management_System.Global.Constants;  
+global using Enterprise_E_Commerce_Management_System.Global;
+global using Enterprise_E_Commerce_Management_System.Application.Users.DTOs;
+global using System.Security.Claims;
+global using Enterprise_E_Commerce_Management_System.Models.Payments;
+global using Enterprise_E_Commerce_Management_System.Models.Orders;
+global using Enterprise_E_Commerce_Management_System.Models.Shipments;
+global using storage = Enterprise_E_Commerce_Management_System.Global.GlobalStorage;
+global using valid = Enterprise_E_Commerce_Management_System.Global.Constants.ValidationConstants;
+global using static Enterprise_E_Commerce_Management_System.Global.Extension_Methods.PermissionExtensions;
+global using Enterprise_E_Commerce_Management_System.Models.Attributes;
+global using Enterprise_E_Commerce_Management_System.Models.Variants.Enums;
+//global using Enterprise_E_Commerce_Management_System.Views;
+
+
+
+

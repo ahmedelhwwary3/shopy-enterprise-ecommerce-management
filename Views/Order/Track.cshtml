@@ -1,0 +1,183 @@
+﻿@using Enterprise_E_Commerce_Management_System.ViewModels.Orders
+@model OrderTrackViewModel
+
+@{
+    ViewBag.Title = "Order Tracking";
+
+    bool IsReturn = Model.OrderStatus == enOrderStatus.Paid;
+    bool ExceedsReturnDays = IsReturn && (DateTime.UtcNow - Model.OrderDate).TotalDays > valid.OrderReturnMaxDays; 
+    string label = Model.IsCancel ? "Cancel Order" : "Return Order";
+}
+
+<div class="app-wrapper">
+
+    <div class="card shadow-sm">
+
+        <div class="card-header bg-light">
+            <h5 class="mb-0">Order Tracking</h5>
+        </div>
+
+        <div class="card-body">
+            <div class="row g-3">
+                @if (ExceedsReturnDays)
+                {
+                    <div class="alert alert-warning d-flex align-items-center mt-3" role="alert">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <div>
+                            The return period has expired. This order can no longer be returned.
+                        </div>
+                    </div>
+                }
+
+                <!-- ================= Order Info ================= -->
+                <div class="col-md-6">
+                    <div class="detail-item">
+                        <div class="detail-label">Order Number</div>
+                        <div class="detail-value">@Model.OrderNumber</div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="detail-item">
+                        <div class="detail-label">Order Date</div>
+                        <div class="detail-value">
+                            @Model.OrderDate.ToString("dd MMM yyyy")
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="detail-item">
+                        <div class="detail-label">Customer Name</div>
+                        <div class="detail-value">@Model.FullName</div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="detail-item">
+                        <div class="detail-label">Phone Number</div>
+                        <div class="detail-value">@Model.PhoneNumber</div>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="detail-item">
+                        <div class="detail-label">Address</div>
+                        <div class="detail-value">
+                            @Model.Street, @Model.City, @Model.Country
+                            @if (!string.IsNullOrEmpty(Model.PostalCode))
+                            {
+                                <text> - @Model.PostalCode</text>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="detail-item">
+                        <div class="detail-label">Total Amount</div>
+                        <div class="detail-value">
+                            @Model.Amount.ToString("N2") @Model.CurrencyCode
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="detail-item">
+                        <div class="detail-label">Order Status</div>
+                        <span class="badge bg-primary">
+                            @Model.OrderStatus
+                        </span>
+                    </div>
+                </div>
+
+                @if (Model.ShipmentStatus != null)
+                {
+                    <div class="col-md-6">
+                        <div class="detail-item">
+                            <div class="detail-label">Shipment Status</div>
+                            <span class="badge bg-secondary">
+                                @Model.ShipmentStatus
+                            </span>
+                        </div>
+                    </div>
+                }
+
+                @if (Model.PaymentMethod != null)
+                {
+                    <div class="col-md-6">
+                        <div class="detail-item">
+                            <div class="detail-label">Payment Method</div>
+                            <div class="detail-value">@Model.PaymentMethod</div>
+                        </div>
+                    </div>
+                }
+
+                @if (Model.PaymentStatus != null)
+                {
+                    <div class="col-md-6">
+                        <div class="detail-item">
+                            <div class="detail-label">Payment Status</div>
+                            <span class="badge bg-success">
+                                @Model.PaymentStatus
+                            </span>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+
+        <!-- ================= Actions ================= -->
+        @if ((!ExceedsReturnDays || Model.IsCancel) &&
+        Model.ShipmentStatus!=enShippingStatus.ShippingFailed
+        && Model.OrderStatus != enOrderStatus.Cancelled)
+        {
+            <div class="card-footer">
+
+                <form asp-action="CancelOrReturn">
+
+                    <input type="hidden" asp-for="OrderId" />
+
+                    @if (IsReturn)
+                    {
+                        <div class="mb-3">
+                            <label for="Notes" class="form-label">Notes</label>
+                            <input type="text"
+                                   name="Notes"
+                                   id="Notes"
+                                   class="form-control"
+                                   placeholder="Reason for return"
+                                   required />
+                        </div>
+                    }
+                    else
+                    {
+                        <!-- Required value for ModelState -->
+                        <input type="hidden"
+                               id="Notes"
+                               name="Notes"
+                               value="CancelOrder" />
+                    }
+
+                    <div class="form-actions">
+                        <a class="btn btn-back"
+                           asp-action="Index"
+                           asp-controller="Shopping">
+                            Back to List
+                        </a>
+
+                        <button type="submit"
+                                class="btn btn-danger">
+                            @label
+                        </button>
+                    </div>
+
+                </form>
+
+            </div>
+        }
+
+    </div>
+
+</div>

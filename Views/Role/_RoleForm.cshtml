@@ -1,0 +1,63 @@
+﻿@using Enterprise_E_Commerce_Management_System.ViewModels.Role;
+@model RoleFormViewModel
+<form asp-action="Form" method="post">
+	@{
+		string submitName = string.IsNullOrEmpty(Model.Id )? "Create" : "Save";
+	}
+
+	<div>
+        <input type="hidden" asp-for="Id" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="table-wrapper">
+        <table class="table table-bordered app-table">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Description</th>
+                    <th class="text-center">Granted</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @for (int i = 0; i < Model.Permissions.Count; i++)
+                {
+                    <tr>
+                        <td>@Model.Permissions[i].Code</td>
+                        <td>@Model.Permissions[i].Description</td>
+                        <td class="text-center">
+                            <input type="checkbox"
+                                   asp-for="@Model.Permissions[i].IsGranted"
+                                   class="form-check-input" />
+                        </td>
+                        <input type="hidden" asp-for="@Model.Permissions[i].Id" />
+                    </tr> 
+                }
+            </tbody>
+
+            <tfoot>
+                <tr>
+                    <td colspan="7">
+                        Total Count: <strong>@Model.Permissions.Count</strong>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+
+	<div class="form-actions">
+		<a class="btn btn-outline-secondary" asp-action="Index">
+			Back to List
+		</a>
+		<div>
+			<input type="submit" value="@submitName" class="btn btn-success" />
+		</div>
+	</div>  
+</form>

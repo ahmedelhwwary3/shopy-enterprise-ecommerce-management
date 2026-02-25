@@ -1,0 +1,96 @@
+﻿@using Enterprise_E_Commerce_Management_System.ViewModels.Order
+@using Enterprise_E_Commerce_Management_System.ViewModels.Shipment
+@model ShipmentDetailsViewModel
+
+@{
+    ViewData["Title"] = "Order Shipping Details";
+}
+
+<div class="app-wrapper">
+
+    <!-- ================= Details Card ================= -->
+    <div class="card shadow-sm">
+
+        <div class="card-header bg-light">
+            <h5 class="mb-0">Order Shipping Details</h5>
+        </div>
+
+        <div class="card-body">
+            <div class="row g-3">
+
+                <div class="col-md-6">
+                    <div class="detail-item">
+                        <div class="detail-label">Order Number</div>
+                        <div class="detail-value">@Model.OrderNumber</div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="detail-item">
+                        <div class="detail-label">Order Date</div>
+                        <div class="detail-value">@Model.OrderDate</div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="detail-item">
+                        <div class="detail-label">Full Name</div>
+                        <div class="detail-value">@Model.FullName</div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="detail-item">
+                        <div class="detail-label">Phone Number</div>
+                        <div class="detail-value">@Model.PhoneNumber</div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="detail-item">
+                        <div class="detail-label">Amount</div>
+                        <div class="detail-value">@Model.Amount.ToString("N2") @Model.CurrencyCode</div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="detail-item">
+                        <div class="detail-label">Address</div>
+                        <div class="detail-value">
+                            @Model.Country - @Model.City <br />
+                            @Model.PostalCode - @Model.Street
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+         
+        <!-- ================= Actions ================= -->
+        <div class="card-footer">
+            <div class="form-actions d-flex justify-content-between align-items-center">
+
+                <a class="btn btn-outline-secondary"
+                   asp-action="AvailableOrdersForAssign">
+                    Back to List
+                </a>
+
+                <form asp-action="AssignOrderForShipment"
+                      asp-controller="Order"
+                      asp-route-OrderId="@Model.Id"
+                      method="post"
+                      onsubmit="return confirm('Are you sure you want to receive this order?')"
+                      class="d-inline">
+
+                    <button type="submit" class="btn btn-success">
+                        Assign
+                    </button>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>

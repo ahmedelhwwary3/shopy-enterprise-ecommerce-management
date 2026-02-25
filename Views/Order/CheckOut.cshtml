@@ -1,0 +1,118 @@
+﻿@using Enterprise_E_Commerce_Management_System.ViewModels.Customer
+@model CustomerFormViewModel
+
+@{
+    ViewBag.Title = "Check Out";
+    var countryList = new SelectList(Model.Address.Countries, "Id", "Name");
+}
+
+<div class="app-wrapper d-flex justify-content-center">
+
+    <div class="card shadow-sm form-card">
+
+        <div class="card-header bg-light text-center">
+            <h5 class="mb-0">Checkout</h5>
+        </div>
+
+        <div class="card-body">
+
+            <form asp-action="Confirm">
+
+                <!-- ================= Full Name ================= -->
+                <h6 class="section-title">Personal Information</h6>
+
+                <div class="row g-3 mb-4">
+                    <div class="col-md-4">
+                        <label asp-for="FullName.FirstName" class="form-label"></label>
+                        <input asp-for="FullName.FirstName" class="form-control" />
+                        <span asp-validation-for="FullName.FirstName" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="FullName.MiddleName" class="form-label"></label>
+                        <input asp-for="FullName.MiddleName" class="form-control" />
+                        <span asp-validation-for="FullName.MiddleName" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="FullName.LastName" class="form-label"></label>
+                        <input asp-for="FullName.LastName" class="form-control" />
+                        <span asp-validation-for="FullName.LastName" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- ================= Address ================= -->
+                <h6 class="section-title">Shipping Address</h6>
+
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <label asp-for="Address.CountryId" class="form-label"></label>
+                        <select asp-for="Address.CountryId"
+                                asp-items="countryList"
+                                class="form-select">
+                            <option value="">-- Select Country --</option>
+                        </select>
+                        <span asp-validation-for="Address.CountryId" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Address.PostalCode" class="form-label"></label>
+                        <input asp-for="Address.PostalCode" class="form-control" />
+                        <span asp-validation-for="Address.PostalCode" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Address.City" class="form-label"></label>
+                        <input asp-for="Address.City" class="form-control" />
+                        <span asp-validation-for="Address.City" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Address.Street" class="form-label"></label>
+                        <input asp-for="Address.Street" class="form-control" />
+                        <span asp-validation-for="Address.Street" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- ================= Contact ================= -->
+                <h6 class="section-title">Contact Information</h6>
+
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <label asp-for="Email" class="form-label"></label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="PhoneNumber" class="form-label"></label>
+                        <input asp-for="PhoneNumber" class="form-control" />
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div asp-validation-summary="All"
+                     class="text-danger mb-3"></div>
+
+                <!-- ================= Actions ================= -->
+                <div class="form-actions d-flex justify-content-between">
+                    <a class="btn btn-back"
+                       asp-action="Index"
+                       asp-controller="Shopping">
+                        Back to Shopping
+                    </a>
+
+                    <input type="submit"
+                           value="Confirm Order"
+                           class="btn btn-success" />
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

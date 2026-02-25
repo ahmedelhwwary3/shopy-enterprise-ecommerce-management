@@ -1,0 +1,150 @@
+﻿@using Enterprise_E_Commerce_Management_System.ViewModels.Variant
+@model VariantFormViewModel
+
+@{
+    ViewBag.Title = Model.Id.HasValue ? "Edit Variant" : "Create Variant";
+    var currencies=new SelectList(Model.Currencies,"Id","Code",ViewBag.CurrencyId);
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <!-- Currency -->
+            <div class="col-md-2">
+                <label class="form-label">Currency</label>
+
+                <form asp-controller="Currency"
+                      asp-action="SaveChoice"
+                      method="post"
+                      class="m-0">
+                    <input type="hidden" name="ReturnUrl" value="@($"{Context.Request.Path}{Context.Request.QueryString}")" />
+                    @Html.AntiForgeryToken()
+
+                    <select name="CurrencyId"
+                            class="form-select"
+                            asp-items="currencies"
+                            onchange="this.form.submit()">
+                    </select>
+                </form><br />
+            </div>
+
+            <form asp-action="Form" method="post">
+
+                <div class="row g-3">
+
+                    <div class="col-md-4">
+                        <label asp-for="SKU" class="form-label"></label>
+                        <input asp-for="SKU" class="form-control" />
+                        <span asp-validation-for="SKU" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">Price in @Model.Code</label>
+                        <input asp-for="Price" class="form-control" min="@valid.MinPrice" />
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="Cost" class="form-label"></label>
+                        <input asp-for="Cost" class="form-control" min="@valid.MinPrice" />
+                        <span asp-validation-for="Cost" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="StockQuantity" class="form-label"></label>
+                        <input asp-for="StockQuantity" class="form-control" min="1" />
+                        <span asp-validation-for="StockQuantity" class="text-danger"></span>
+                    </div>
+
+                    @for (int i = 0; i < Model.Attributes.Count; i++)
+                    {
+                        var attr = Model.Attributes[i];
+
+                        <div class="col-md-6 mb-3">
+
+                            <!-- Name (ثابت، جاي من السيرفر) -->
+                            <input type="hidden"
+                                   asp-for="Attributes[@i].Name" />
+
+                            <label class="form-label fw-bold">
+                                @attr.Name
+                            </label>
+
+                            @* ===== Color ===== + JS For Taking User Input Value And Disable Another Values*@
+                            @if (attr.DisplayType == enDisplayType.Color)
+                            {
+                                <div class="variant-attribute"
+                                     data-index="@i">
+
+                                    <div class="d-flex gap-2 flex-wrap">
+                                        @foreach (var option in attr.ValueOptions)
+                                        {
+                                            <button type="button"
+                                                    class="color-btn"
+                                                    style="background-color:@option"
+                                                    data-value="@option">
+                                            </button>
+                                        }
+                                    </div>
+
+                                    <!-- Value -->
+                                    <input type="hidden"
+                                           asp-for="Attributes[@i].Value"
+                                           class="attribute-value" />
+                                </div>
+                            }
+
+                            @* ===== Dropdown ===== *@
+                            @if (attr.DisplayType == enDisplayType.Dropdown)
+                            {
+                                <select class="form-select w-50"
+                                        asp-for="Attributes[@i].Value">
+
+                                    @foreach (var option in attr.ValueOptions)
+                                    {
+                                        <option value="@option">@option</option>
+                                    }
+                                </select>
+                            }
+
+                            @* ===== Text ===== *@
+                            @if (attr.DisplayType == enDisplayType.Text)
+                            {
+                                <input type="text"
+                                       class="form-control w-50"
+                                       asp-for="Attributes[@i].Value"
+                                       placeholder="Enter @attr.Name" />
+                            }
+
+                        </div>
+                    }
+
+
+                </div>
+
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="ProductId" />
+
+                <!-- Actions -->
+                <div class="form-actions mt-4">
+
+                    <a class="btn btn-outline-secondary"
+                       asp-action="Form"
+                       asp-controller="Product"
+                       asp-route-Id="@Model.ProductId">
+                        Back to List
+                    </a>
+
+                    <button type="submit" class="btn btn-success ms-2">
+                        @(Model.Id.HasValue ? "Save Changes" : "Create Variant")
+                    </button>
+
+                </div>
+
+                <div asp-validation-summary="All" class="text-danger mt-3"></div>
+
+            </form>
+
+        </div>
+    </div>
+</div>

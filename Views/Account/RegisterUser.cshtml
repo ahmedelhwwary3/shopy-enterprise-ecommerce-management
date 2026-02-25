@@ -1,0 +1,92 @@
+﻿@using Enterprise_E_Commerce_Management_System.ViewModels.Account
+@model RegisterUserViewModel
+
+@{
+    ViewBag.Title = "Register User";
+    var roleList = new SelectList(Model.Roles, "Name", "Name");
+    var countryList = new SelectList(Model.Countries, "Id", "Name");
+    string submitName = "Create";
+}
+
+<div class="app-wrapper d-flex justify-content-center">
+
+    <div class="card shadow-sm form-card">
+
+        <div class="card-header bg-light text-center">
+            <h5 class="mb-0">Register User</h5>
+        </div>
+
+        <div class="card-body">
+
+            <form asp-action="RegisterUser" asp-controller="Account">
+
+                <div class="mb-3">
+                    <label asp-for="UserName" class="form-label"></label>
+                    <input asp-for="UserName" class="form-control" />
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Password" class="form-label"></label>
+                    <input asp-for="Password" type="password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ConfirmPassword" class="form-label"></label>
+                    <input asp-for="ConfirmPassword" type="password" class="form-control" />
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="PhoneNumber" class="form-label"></label>
+                    <input asp-for="PhoneNumber" class="form-control" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="RoleName" class="form-label"></label>
+                    <select asp-for="RoleName"
+                            asp-items="roleList"
+                            class="form-select">
+                        <option value="">-- Select Role --</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="CountryId" class="form-label"></label>
+                    <select asp-for="CountryId"
+                            asp-items="countryList"
+                            class="form-select">
+                        <option value="">-- Select Country --</option>
+                    </select>
+                </div>
+
+                <div asp-validation-summary="All"
+                     class="text-danger mb-3"></div>
+
+                <div class="form-actions d-flex justify-content-between">
+                    <a class="btn btn-outline-secondary"
+                       asp-action="Index"
+                       asp-controller="User">
+                        Back to List
+                    </a>
+
+                    <input type="submit"
+                           value="@submitName"
+                           class="btn btn-success" />
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<partial name="_ValidationScriptsPartial" />

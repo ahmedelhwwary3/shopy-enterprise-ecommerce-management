@@ -1,0 +1,99 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="Shopy is a modern e-commerce platform for managing products, orders, and customers with a clean and simple interface." />
+    <meta name="author" content="Ahmed Elhwwary" />
+    <title>Shopy</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" /> 
+
+
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="~/css/styles.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/styles.css" asp-append-version="true" />
+</head>
+    @{
+                int? cartId = storage.GetInt32FromSessionOrCookies( storage.CartIdKey,Context);
+                    int? itemsCount = storage.GetInt32FromSessionOrCookies(storage.CartItemsCountKey, Context);
+
+                    int? courierId = storage.GetInt32FromSessionOrCookies(storage.CourierIdKey, Context);
+                int? ordersCount = null;
+                if (courierId.HasValue)
+                {
+                    ordersCount = storage.GetInt32FromSessionOrCookies(storage.OrdersCountKey, Context);
+                }
+    }
+<body id="page-top">
+    <!-- Navigation-->
+    <partial name="_Nav"></partial> 
+    <section class="app-wrapper page-section bg-light" id="portfolio">
+        @RenderBody()
+    </section>  
+    <script src="~/js/scripts.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const cartItemsCountFromServer = @(itemsCount?.ToString() ?? "null");
+        const ordersCountFromServer = @(ordersCount?.ToString() ?? "null");
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            function updateCount({
+                serverValue,
+                url,
+                elementId
+            }) {
+                const el = document.getElementById(elementId);
+                if (!el) return;
+
+                // لو القيمة جاية من السيرفر خلاص
+                if (serverValue !== null) {
+                    el.innerText = serverValue > 0 ? `${serverValue}` : '';
+                    return;
+                }
+
+                // غير كده نعمل AJAX
+                fetch(url)
+                    .then(res => {
+                        if (!res.ok) return;
+                        return res.json();
+                    })
+                    .then(count => {
+                        el.innerText = count > 0 ? `${count}` : '';
+                    })
+                    .catch(() => {
+                        // تجاهل الخطأ
+                    });
+            }
+
+            // Cart count
+            updateCount({
+                serverValue: cartItemsCountFromServer,
+                url: '/Cart/Count',
+                elementId: 'itemCount'
+            });
+
+            // Courier orders count
+            updateCount({
+                serverValue: ordersCountFromServer,
+                url: '/Order/Count',
+                elementId: 'orderCount'
+            });
+
+        });
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html> 

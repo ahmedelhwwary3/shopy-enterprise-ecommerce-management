@@ -1,0 +1,145 @@
+F:\Enterprise E-Commerce Management System\obj\Debug\net8.0\Enterprise E-Commerce Management System.csproj.AssemblyReference.cache
+F:\Enterprise E-Commerce Management System\obj\Debug\net8.0\rpswa.dswa.cache.json
+F:\Enterprise E-Commerce Management System\obj\Debug\net8.0\Enterprise E-Commerce Management System.GeneratedMSBuildEditorConfig.editorconfig
+F:\Enterprise E-Commerce Management System\obj\Debug\net8.0\Enterprise E-Commerce Management System.AssemblyInfoInputs.cache
+F:\Enterprise E-Commerce Management System\obj\Debug\net8.0\Enterprise E-Commerce Management System.AssemblyInfo.cs
+F:\Enterprise E-Commerce Management System\obj\Debug\net8.0\Enterprise E-Commerce Management System.csproj.CoreCompileInputs.cache
+F:\Enterprise E-Commerce Management System\obj\Debug\net8.0\Enterprise E-Commerce Management System.MvcApplicationPartsAssemblyInfo.cache
+F:\Enterprise E-Commerce Management System\obj\Debug\net8.0\Enterprise E-Commerce Management System.RazorAssemblyInfo.cache
+F:\Enterprise E-Commerce Management System\obj\Debug\net8.0\Enterprise E-Commerce Management System.RazorAssemblyInfo.cs
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\appsettings.Development.json
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\appsettings.json
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\Enterprise E-Commerce Management System.staticwebassets.runtime.json
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\Enterprise E-Commerce Management System.staticwebassets.endpoints.json
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\Enterprise E-Commerce Management System.exe
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\Enterprise E-Commerce Management System.deps.json
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\Enterprise E-Commerce Management System.runtimeconfig.json
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\Enterprise E-Commerce Management System.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\Enterprise E-Commerce Management System.pdb
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\AutoMapper.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\Azure.Core.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\Azure.Identity.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\Dapper.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\Humanizer.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\Mailtrap.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\Microsoft.CodeAnalysis.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\Microsoft.CodeAnalysis.Workspaces.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\Microsoft.Data.SqlClient.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Design.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.SqlServer.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\Microsoft.Extensions.DependencyModel.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\Microsoft.Identity.Client.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\Microsoft.Identity.Client.Extensions.Msal.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\Microsoft.SqlServer.Server.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\Microsoft.Win32.SystemEvents.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\Mono.TextTemplating.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\System.CodeDom.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\System.Composition.AttributedModel.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\System.Composition.Convention.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\System.Composition.Hosting.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\System.Composition.Runtime.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\System.Composition.TypedParts.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\System.Configuration.ConfigurationManager.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\System.Drawing.Common.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\System.Memory.Data.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\System.Runtime.Caching.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\System.Security.Permissions.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\System.Windows.Extensions.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\runtimes\unix\lib\net6.0\Microsoft.Data.SqlClient.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\runtimes\win\lib\net6.0\Microsoft.Data.SqlClient.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\runtimes\win-arm\native\Microsoft.Data.SqlClient.SNI.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\runtimes\unix\lib\net6.0\System.Drawing.Common.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
+F:\Enterprise E-Commerce Management System\obj\Debug\net8.0\rjimswa.dswa.cache.json
+F:\Enterprise E-Commerce Management System\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
+F:\Enterprise E-Commerce Management System\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
+F:\Enterprise E-Commerce Management System\obj\Debug\net8.0\scopedcss\bundle\Enterprise E-Commerce Management System.styles.css
+F:\Enterprise E-Commerce Management System\obj\Debug\net8.0\scopedcss\projectbundle\Enterprise E-Commerce Management System.bundle.scp.css
+F:\Enterprise E-Commerce Management System\obj\Debug\net8.0\staticwebassets.build.json
+F:\Enterprise E-Commerce Management System\obj\Debug\net8.0\staticwebassets.build.json.cache
+F:\Enterprise E-Commerce Management System\obj\Debug\net8.0\staticwebassets.development.json
+F:\Enterprise E-Commerce Management System\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+F:\Enterprise E-Commerce Management System\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+F:\Enterprise E-Commerce Management System\obj\Debug\net8.0\Enterpri.37C3A77E.Up2Date
+F:\Enterprise E-Commerce Management System\obj\Debug\net8.0\Enterprise E-Commerce Management System.dll
+F:\Enterprise E-Commerce Management System\obj\Debug\net8.0\refint\Enterprise E-Commerce Management System.dll
+F:\Enterprise E-Commerce Management System\obj\Debug\net8.0\Enterprise E-Commerce Management System.pdb
+F:\Enterprise E-Commerce Management System\obj\Debug\net8.0\Enterprise E-Commerce Management System.genruntimeconfig.cache
+F:\Enterprise E-Commerce Management System\obj\Debug\net8.0\ref\Enterprise E-Commerce Management System.dll
+F:\Enterprise E-Commerce Management System\obj\Debug\net8.0\scopedcss\Views\Shared\_LandingLayout.cshtml.rz.scp.css
+F:\Enterprise E-Commerce Management System\bin\Debug\net8.0\efpt.config.json

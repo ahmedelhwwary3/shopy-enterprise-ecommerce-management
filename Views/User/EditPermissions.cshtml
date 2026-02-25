@@ -1,0 +1,48 @@
+﻿@using Enterprise_E_Commerce_Management_System.ViewModels.User;
+@model UpdateUserPermissionsViewModel
+<form asp-action="EditPermissions" method="post">
+	@{
+		 
+	}
+	<input type="hidden" asp-for="UserId" />
+	<div class="table-wrapper">
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th>Code</th>
+					<th>Description</th>
+					<th>Granted</th>
+				</tr>
+			</thead>
+			<tbody>
+				@for (int i = 0; i < Model.Permissions.Count; i++)
+				{
+					<tr>
+						<td>@Model.Permissions[i].Code</td>
+						<td>@Model.Permissions[i].Description</td>
+						<td><input type="checkbox" asp-for="@Model.Permissions[i].IsGranted" /></td>
+						<input type="hidden" asp-for="@Model.Permissions[i].Id" />
+					</tr>
+				}
+			</tbody>
+			<tfoot>
+				<tr>
+					<td colspan="7">
+						Total Count: <strong>@Model.Permissions.Count</strong>
+					</td>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
+	<div class="form-actions">
+		<a class="btn btn-outline-secondary" asp-action="Manage"
+		   asp-controller="User" asp-route-UserId="@Model.UserId">
+			Back to User Management
+		</a>
+		<div>
+			<input type="submit" value="Save" class="btn btn-success" />
+		</div>
+	</div>
+	
+	<div asp-validation-summary="All" class="text-danger mt-3"></div>
+</form>

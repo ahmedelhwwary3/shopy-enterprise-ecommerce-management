@@ -1,0 +1,64 @@
+﻿@using Enterprise_E_Commerce_Management_System.ViewModels.ShippingProvider
+@model ShippingProviderFormViewModel
+
+@{
+    ViewBag.Title = Model.Id.HasValue ? "Edit Shipping Provider" : "Create Shipping Provider";
+}
+
+<div class="app-wrapper mt-5">
+
+    <div class="container d-flex justify-content-center">
+
+        <div class="card shadow-sm form-card w-100" style="max-width: 500px;">
+
+            <div class="card-header bg-light text-center py-3">
+                <h5 class="mb-0">
+                    @(Model.Id.HasValue ? "Edit Shipping Provider" : "Create Shipping Provider")
+                </h5>
+            </div>
+
+            <div class="card-body p-4">
+
+                <form asp-action="Form" method="post">
+
+                    <input type="hidden" asp-for="Id" />
+
+                    <div class="mb-4">
+                        <label asp-for="Name" class="form-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <div asp-validation-summary="All"
+                         class="text-danger mb-4">
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+
+                        <a class="btn btn-outline-secondary"
+                           asp-action="Index">
+                            Back to List
+                        </a>
+
+                        <div class="d-flex gap-2"> 
+                            <button type="submit"
+                                    class="btn btn-success px-4">
+                                @(Model.Id.HasValue ? "Save" : "Create")
+                            </button> 
+                        </div>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+
+<partial name="_ValidationScriptsPartial" />

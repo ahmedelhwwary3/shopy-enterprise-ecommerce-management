@@ -1,0 +1,117 @@
+﻿@using Enterprise_E_Commerce_Management_System.ViewModels.Customer;
+@model CustomerFormViewModel
+@{
+	var countryList = new SelectList(Model.Address.Countries, "Id", "Name");
+}
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <form asp-action="Form" method="post">
+
+                <input type="hidden" asp-for="Id" />
+
+                <!-- Full Name -->
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label asp-for="FullName.FirstName" class="form-label"></label>
+                        <input asp-for="FullName.FirstName" class="form-control" />
+                        <span asp-validation-for="FullName.FirstName" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="FullName.MiddleName" class="form-label"></label>
+                        <input asp-for="FullName.MiddleName" class="form-control" />
+                        <span asp-validation-for="FullName.MiddleName" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="FullName.LastName" class="form-label"></label>
+                        <input asp-for="FullName.LastName" class="form-control" />
+                        <span asp-validation-for="FullName.LastName" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <hr class="my-4" />
+
+                <!-- Address -->
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label asp-for="Address.CountryId" class="form-label"></label>
+                        <select asp-for="Address.CountryId"
+                                class="form-select"
+                                asp-items="countryList">
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="Address.PostalCode" class="form-label"></label>
+                        <input asp-for="Address.PostalCode" class="form-control" />
+                        <span asp-validation-for="Address.PostalCode" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="Address.City" class="form-label"></label>
+                        <input asp-for="Address.City" class="form-control" />
+                        <span asp-validation-for="Address.City" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-12">
+                        <label asp-for="Address.Street" class="form-label"></label>
+                        <input asp-for="Address.Street" class="form-control" />
+                        <span asp-validation-for="Address.Street" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <hr class="my-4" />
+
+                <!-- Contact -->
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label asp-for="Email" class="form-label"></label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="PhoneNumber" class="form-label"></label>
+                        <input asp-for="PhoneNumber" class="form-control" />
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                    <a class="btn btn-outline-secondary"
+                       asp-action="Index">
+                        Back to List
+                    </a>
+
+                    <button type="submit"
+                            class="btn btn-success">
+                        @(Model.Id.HasValue ? "Save" : "Create")
+                    </button>
+                </div>
+
+                <div asp-validation-summary="All"
+                     class="text-danger mt-3">
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+

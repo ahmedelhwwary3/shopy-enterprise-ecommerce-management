@@ -1,0 +1,28 @@
+﻿@using Enterprise_E_Commerce_Management_System.ViewModels.Customer;
+@model CustomerFormViewModel
+@{
+	ViewBag.Title = "Edit Customer";
+}
+<!--Edit Button + BackToList Button-->
+<partial name="_CustomerForm"> 
+<div>
+	<!--Post-->
+	<form asp-action="Deactivate"
+	onsubmit="return confirm('Are you sure you want to delete this Customer?')"
+	style="display:inline">
+	<input type="hidden" name="Id" id="Id" value="@Model.Id"/>
+		<button type="submit" class="btn btn-outline-secondary">Delete</button>
+	</form>
+</div>
+@section Scripts {
+	<partial name="_ValidationScriptsPartial"> 
+}
+ 
+
+
+
+
+
+
+
+

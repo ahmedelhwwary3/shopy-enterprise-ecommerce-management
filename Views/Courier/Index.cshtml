@@ -1,0 +1,174 @@
+﻿@using Enterprise_E_Commerce_Management_System.ViewModels.Courier
+@model CourierPagedListViewModel
+
+@{
+    ViewBag.Title = "Manage Couriers";
+    var countryList = new SelectList(Model.Filter.Countries, "Id", "Name");
+}
+
+<partial name="_Notifications"> 
+
+<!-- Search / Filters -->
+<div class="d-flex justify-content-center my-4 px-3">
+    <form asp-action="Index"
+          method="get"
+          class="card p-3 search-box">
+
+        <div class="row g-3 align-items-end">
+
+            <div class="col-md-3">
+                <label asp-for="Filter.Search" class="form-label"></label>
+                <input asp-for="Filter.Search"
+                       class="form-control"
+                       placeholder="Search by user name" />
+            </div>
+
+            <div class="col-md-3">
+                <label asp-for="Filter.CountryId" class="form-label">Country</label>
+                <select asp-for="Filter.CountryId"
+                        asp-items="@countryList"
+                        class="form-select"
+                        onchange="this.form.submit()">
+                    <option value="">All</option>
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <label asp-for="Filter.Status" class="form-label">Status</label>
+                <select asp-for="Filter.Status"
+                        class="form-select"
+                        onchange="this.form.submit()">
+                    <option value="">All</option>
+                    <option value="true">Active</option>
+                    <option value="false">Inactive</option>
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <button type="submit"
+                        class="btn btn-primary w-100">
+                    Search
+                </button>
+            </div>
+
+        </div>
+
+        <!-- Page (hidden – pagination controls it) -->
+        <input type="hidden" asp-for="Filter.Page" />
+    </form>
+</div>
+
+    <div class="table-wrapper wide-table-wrapper">
+    <!-- Table -->
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <!-- ترتيب مريح -->
+                <th>User Name</th>
+                <th>Country</th>
+                <th>Status</th>
+                <th>All Shipments</th>
+                <th>Pending For Delivery</th>
+                <th>Shipped Orders</th>
+                <th>ReturnedOrders</th>
+                <th>Shipping Failed</th>
+                <th>Cancelled Orders</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @if (Model?.Couriers != null && Model.Couriers.Any())
+            {
+                foreach (var courier in Model.Couriers)
+                {
+                    <tr>
+                        <td>@courier.UserName</td>
+                        <td>@courier.CountryName</td>
+                        <td>@courier.Status</td>
+                        <td>@courier.AllShipments</td>
+                        <td>@courier.PendingForDelivery</td>
+                        <td>@courier.ShippedOrders</td>
+                        <td>@courier.ReturnedOrders</td>
+                        <td>@courier.ShippingFailed</td>
+                        <td>@courier.CancelledOrders</td>
+                        <td>
+                            <a asp-action="Details"
+                               asp-route-CourierId="@courier.CourierId"
+                               class="btn btn-sm btn-outline-success">
+                                Details
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="8">No couriers found</td>
+                </tr>
+            }
+        </tbody>
+
+        <tfoot>
+            <tr>
+                <td colspan="8">
+                    Total Count: <strong>@Model.Count</strong>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+<!-- Pagination --> 
+@if (Model.Count > Model.Filter.PageSize)
+{
+    var totalPages = (int)Math.Ceiling(Model.Count / (double)Model.Filter.PageSize);
+    var currentPage = Model.Filter.Page;
+
+    <div class="pagination-wrapper mt-4 d-flex justify-content-center">
+        <nav class="pagination ">
+            <ul role="list">
+
+                <!-- Prev -->
+                <li>
+                    <a class="pg-btn @(currentPage == 1 ? "disabled" : "")"
+                       asp-action="Index"
+                       asp-route-Filter.Page="@(currentPage > 1 ? currentPage - 1 : 1)"
+                       asp-route-Filter.Search="@Model.Filter.Search"
+                       asp-route-Filter.CountryId="@Model.Filter.CountryId"
+                       asp-route-Filter.Status="@Model.Filter.Status">
+                        Prev
+                    </a>
+                </li>
+
+                @for (int i = 1; i <= totalPages; i++)
+                {
+                    <li>
+                        <a class="pg-btn @(i == currentPage ? "is-active" : "")"
+                           asp-action="Index"
+                           asp-route-Filter.Page="@i"
+                           asp-route-Filter.Search="@Model.Filter.Search"
+                           asp-route-Filter.CountryId="@Model.Filter.CountryId"
+                           asp-route-Filter.Status="@Model.Filter.Status">
+                            @i
+                        </a>
+                    </li>
+                }
+
+                <!-- Next -->
+                <li>
+                    <a class="pg-btn @(currentPage == totalPages ? "disabled" : "")"
+                       asp-action="Index"
+                       asp-route-Filter.Page="@(currentPage<totalPages? currentPage + 1 : totalPages)"
+                       asp-route-Filter.Search="@Model.Filter.Search"
+                       asp-route-Filter.CountryId="@Model.Filter.CountryId"
+                       asp-route-Filter.Status="@Model.Filter.Status">
+                        Next
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+    </div>
+}

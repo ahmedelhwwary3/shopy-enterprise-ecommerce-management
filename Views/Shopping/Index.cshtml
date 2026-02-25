@@ -1,0 +1,318 @@
+﻿@using Enterprise_E_Commerce_Management_System.ViewModels.ShoppingProducts
+@model ShoppingPageViewModel
+
+@{
+    Layout = "_LandingLayout";
+    ViewBag.Title = "Shopping";
+    var categoryList = new SelectList(Model.Categories, "Id", "Name");
+    var priceRangeList = new SelectList(Model.ProductPrices, "RangeValue", "Label");
+    int currencyId = storage.GetCookieCurrencyIdOrDefault(Context);
+    var currencyList = new SelectList(Model.Currencies, "Id", "Code", currencyId);
+}
+
+
+@section Search {
+
+    <div class="container mb-4">
+        <div class="card p-3 shadow-sm">
+
+            <div class="row g-3 align-items-end">
+
+                <!-- Category -->
+                <div class="col-md-2">
+                    <label class="form-label">Category</label>
+                    <select id="CategoryId"
+                            class="form-select"
+                            asp-items="@categoryList">
+                        <option value="">All</option>
+                    </select>
+                </div>
+
+                <!-- Price -->
+                <div class="col-md-2">
+                    <label class="form-label">Price in @Model.Code</label>
+                    <select id="Price"
+                            class="form-select"
+                            asp-items="@priceRangeList">
+                        <option value="">All</option>
+                    </select>
+                </div>
+
+                <!-- Name -->
+                <div class="col-md-3">
+                    <label class="form-label invisible">Search</label>
+                    <input id="Name"
+                           class="form-control"
+                           placeholder="Search by name" />
+                </div>
+
+                <!-- Search Button -->
+                <div class="col-md-2">
+                    <label class="form-label invisible">Button</label>
+                    <button id="btnSearch"
+                            class="btn btn-primary w-100">
+                        Search
+                    </button>
+                </div>
+
+                <!-- Currency -->
+                <div class="col-md-2">
+                    <label class="form-label">Currency</label>
+                    <input type="hidden" name="ReturnUrl" value="@($"{Context.Request.Path}{Context.Request.QueryString}")" />
+                    <form asp-controller="Currency"
+                          asp-action="SaveChoice"
+                          method="post"
+                          class="m-0">
+
+                        @Html.AntiForgeryToken()
+
+                        <select name="currencyId"
+                                class="form-select"
+                                asp-items="currencyList"
+                                onchange="this.form.submit()">
+                        </select>
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+}
+
+<!-- Products -->
+<div class="container">
+    <div id="productsGrid" class="row row-cols-1 row-cols-md-3 g-4"></div>
+</div>
+
+
+<!-- Pagination (تحت خالص زي Amazon) -->
+<div class="pagination-wrapper mt-5 d-flex justify-content-center">
+    <nav class="pagination " aria-label="Pagination">
+        <ul id="paginationContainer" role="list"></ul>
+    </nav>
+</div>
+
+<!-- Count -->
+<div id="productsCount" class="text-center text-muted mt-3"></div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        /* ================= State ================= */
+        let currentPage = 1;
+        const pageSize = 10; // لازم يطابق السيرفر
+
+        /* ================= Search Button ================= */
+        const btnSearch = document.getElementById("btnSearch");
+        if (btnSearch) {
+            btnSearch.addEventListener("click", function (e) {
+                e.preventDefault();
+                currentPage = 1;
+                loadProducts();
+                scrollToProducts();
+            });
+        } 
+
+
+        /* ================= Initial Load ================= */
+        loadProducts();
+
+        /* ================= Load Products ================= */
+        function loadProducts() {
+
+            const categoryId = document.getElementById("CategoryId")?.value;
+            const priceRange = document.getElementById("Price")?.value || "";
+            const name = document.getElementById("Name")?.value || ""; 
+
+            let minPrice = null;
+            let maxPrice = null;
+
+            if (priceRange) {
+                const parts = priceRange.split("-");
+                minPrice = parts[0] ? parseInt(parts[0]) : null;
+                maxPrice = parts[1] ? parseInt(parts[1]) : null;
+            }
+
+            const params = new URLSearchParams();
+
+            if (categoryId) params.append("CategoryId", categoryId);
+            if (name) params.append("Name", name);
+            if (minPrice !== null) params.append("MinPrice", minPrice);
+            if (maxPrice !== null) params.append("MaxPrice", maxPrice);
+
+            params.append("Page", currentPage);
+            params.append("PageSize", pageSize);
+            params.append("CurrencyId", @currencyId);
+
+            fetch(`/Shopping/Search?${params.toString()}`)
+                .then(res => res.json())
+                .then(result => {
+                    renderProducts(result.products,result.code);
+                    renderFooter(result.count);
+                    renderPagination(result.count);
+                })
+                .catch(err => console.error(err));
+        }
+
+        /* ================= Products ================= */
+        function renderProducts(items,code) {
+
+            const grid = document.getElementById("productsGrid");
+            grid.innerHTML = "";
+
+            if (!items || items.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-12 text-center">
+                        <p class="text-muted">No products found</p>
+                    </div>`;
+                return;
+            }
+
+                items.forEach(item => {
+
+          const outOfStockBadge = item.maxPrice === 0
+              ? `<div class="out-of-stock-badge">Out of Stock</div>`
+              : "";
+
+           const PriceRangePart = item.maxPrice !== 0
+          ? `<div class="fw-bold mt-1">
+            ${item.minPrice.toFixed(2)} - ${item.maxPrice.toFixed(2)} ${code}
+            </div>`
+          : "";
+
+          grid.insertAdjacentHTML("beforeend", `
+              <div class="col-lg-4 col-sm-6 mb-4">
+                  <div class="portfolio-item position-relative">
+
+                      ${outOfStockBadge}
+
+                      <a class="portfolio-link"
+                         href="/Cart/AddItem/${item.productId}">
+                          <div class="portfolio-hover">
+                              <div class="portfolio-hover-content">
+                                  <i class="fas fa-plus fa-3x"></i>
+                              </div>
+                          </div>
+                          <img class="img-fluid"
+                               src="/Images/${item.imageName}"
+                               alt="${item.name}" />
+                      </a>
+
+                      <div class="portfolio-caption">
+                          <div class="portfolio-caption-heading">
+                              ${item.name}
+                          </div>
+                          <div class="portfolio-caption-subheading text-muted">
+                              ${item.categoryName}
+                          </div>
+                          ${PriceRangePart}
+                      </div>
+
+                  </div>
+              </div>
+          `);
+        });
+        }
+
+        /* ================= Footer ================= */
+        function renderFooter(count) {
+            const footer = document.getElementById("productsCount");
+            if (footer) {
+                footer.innerHTML = `Total Products: <strong>${count}</strong>`;
+            }
+        }
+
+        /* ================= Pagination ================= */
+        function renderPagination(totalCount) {
+
+            const totalPages = Math.ceil(totalCount / pageSize);
+            const container = document.getElementById("paginationContainer");
+
+            if (!container) return;
+            container.innerHTML = "";
+
+            if (totalPages <= 1) return;
+
+            container.appendChild(
+                createPageButton("Prev", currentPage - 1, currentPage === 1)
+            );
+
+            for (let i = 1; i <= totalPages; i++) {
+                container.appendChild(
+                    createPageButton(i, i, false, i === currentPage)
+                );
+            }
+
+            container.appendChild(
+                createPageButton("Next", currentPage + 1, currentPage === totalPages)
+            );
+        }
+
+        function createPageButton(text, page, disabled = false, isActive = false) {
+
+            const li = document.createElement("li");
+            const btn = document.createElement("button");
+
+            li.classList.add("page-item");
+            btn.classList.add("page-link", "shop-page-btn");
+
+            btn.type = "button";
+            btn.textContent = text;
+
+            if (disabled) {
+                li.classList.add("disabled");
+                btn.disabled = true;
+            }
+
+            if (isActive) {
+                li.classList.add("active");
+                btn.setAttribute("aria-current", "page");
+            }
+
+            btn.addEventListener("click", function (e) {
+                e.preventDefault();
+
+                if (disabled || page < 1 || page === currentPage) return;
+
+                currentPage = page;
+                loadProducts();
+                scrollToProducts();
+            });
+
+            li.appendChild(btn);
+            return li;
+        }
+
+        /* ================= Scroll Helper ================= */
+        function scrollToProducts() {
+
+            const productsGrid = document.getElementById("productsGrid");
+            if (!productsGrid) return;
+
+            const navbarOffset = 100; // عدّلها حسب ارتفاع الـ navbar
+            const top =
+                productsGrid.getBoundingClientRect().top +
+                window.pageYOffset -
+                navbarOffset;
+
+            window.scrollTo({
+                top: top,
+                behavior: "smooth"
+            });
+        }
+
+        /* ================= Filters ================= */
+        document.getElementById("CategoryId")?.addEventListener("change", resetPage);
+        document.getElementById("Price")?.addEventListener("change", resetPage);
+
+        function resetPage() {
+            currentPage = 1;
+            loadProducts();
+            scrollToProducts();
+        }
+
+    });
+</script>

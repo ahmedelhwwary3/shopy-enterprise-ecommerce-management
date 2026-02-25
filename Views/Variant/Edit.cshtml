@@ -1,0 +1,61 @@
+﻿@using Enterprise_E_Commerce_Management_System.ViewModels.Variant;
+@model VariantFormViewModel
+@{
+	ViewBag.Title = "Edit Variant";
+}
+<partial name="_VariantForm"> 
+<form id="deleteVariantForm-@Model.Id"
+      asp-action="Delete"
+      method="post"
+      onsubmit="return confirm('Are you sure you want to delete this Variant?')"
+      class="d-none">
+
+    <input type="hidden" name="Id" value="@Model.Id" />
+</form>
+<div class="form-actions">
+    <button type="button"
+            class="btn btn-sm btn-outline-danger"
+            onclick="document.getElementById('deleteVariantForm-@Model.Id').submit();">
+        Delete
+    </button>
+</div>
+
+ 
+
+@section Scripts {
+	<partial name="_ValidationScriptsPartial"></partial>
+}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        document.querySelectorAll(".variant-attribute").forEach(container => {
+
+            const hiddenInput = container.querySelector(".attribute-value");
+            const buttons = container.querySelectorAll(".color-btn");
+
+            const selectedValue = hiddenInput.value; // القيمة الجاية من السيرفر
+
+            // لو في قيمة جاية (Update)
+            if (selectedValue) {
+                buttons.forEach(btn => {
+                    if (btn.dataset.value === selectedValue) {
+                        btn.classList.add("active");
+                    }
+                });
+            }
+
+            // التعامل مع الاختيار الجديد
+            buttons.forEach(btn => {
+                btn.addEventListener("click", function () {
+
+                    buttons.forEach(b => b.classList.remove("active"));
+                    this.classList.add("active");
+
+                    hiddenInput.value = this.dataset.value;
+                });
+            });
+
+        });
+
+    });
+</script>

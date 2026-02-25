@@ -1,0 +1,70 @@
+﻿@using Enterprise_E_Commerce_Management_System.ViewModels.UserProducts
+@model ProductFormViewModel
+@{
+	var categoryList = new SelectList(Model.Categories, "Id", "Name");
+}
+<style>
+    img {
+        width: 250px;
+        height: auto;
+    }
+</style>
+
+<partial name="_Notifications">
+
+    <form asp-action="Form" method="post" enctype="multipart/form-data" class="app-form">
+
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description" class="form-label"></label>
+        <input asp-for="Description" class="form-control" />
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CategoryId" class="form-label"></label>
+        <select asp-for="CategoryId"
+                asp-items="categoryList"
+                class="form-select">
+            <option value="0">-- Select Category --</option>
+        </select>
+        <span asp-validation-for="CategoryId" class="text-danger"></span>
+    </div>
+
+    @* ================= Image ================= *@
+    <div class="form-group image-group">
+        <label asp-for="ImageFile" class="form-label"></label>
+
+        @if (!string.IsNullOrEmpty(Model.ImageName))
+        {
+            <div class="image-preview">
+                <img asp-append-version src="~/Images/@Model.ImageName" alt="Product Image" />
+            </div>
+        }
+
+        <input asp-for="ImageFile" type="file" class="form-control" />
+        <span asp-validation-for="ImageFile" class="text-danger"></span>
+    </div>
+
+    @* ================= Actions ================= *@
+    <div class="form-actions">
+        <a class="btn btn-sm btn-outline-secondary" asp-action="Index">
+            Back to List
+        </a>
+
+        <button type="submit" class="btn btn-sm btn-success">
+            Save
+        </button>
+    </div>
+
+    <div asp-validation-summary="All" class="text-danger mt-3"></div>
+</form>
+
+

@@ -1,0 +1,237 @@
+﻿@{
+
+    bool IsAuth = User.Identity?.IsAuthenticated ?? false;
+    bool HasPermission(enPermissions p) => User.HasClaim(storage.PermissionKey, p.GetPermissionCode());
+    bool IsCourier = User.IsInRole(enUserRole.Courier.ToString());
+    int? ordersCount = null;
+    if (IsCourier)
+    {
+        ordersCount = storage.GetInt32FromSessionOrCookies(storage.OrdersCountKey,Context);
+    } 
+    int? cartId = storage.GetInt32FromSessionOrCookies(storage.CartIdKey, Context);
+
+
+}
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top" id="mainNav">
+    <div class="container">
+
+        <a class="navbar-brand" asp-controller="Shopping" asp-action="Index">
+            Shopy
+        </a>
+
+        <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarResponsive"
+                aria-controls="navbarResponsive"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+            Menu
+            <i class="fas fa-bars ms-1"></i>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
+
+                @if (IsAuth)
+                {
+                    @* ================= Security ================= *@
+                    @if (
+                                    HasPermission(enPermissions.Roles_Manage) ||
+                                    HasPermission(enPermissions.Users_Manage) ||
+                                    HasPermission(enPermissions.Couriers_Manage)
+                                    )
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle"
+                               href="#"
+                               role="button"
+                               data-bs-toggle="dropdown">
+                                Security
+                            </a>
+                            <ul class="dropdown-menu"> 
+                                @if (HasPermission(enPermissions.Users_Manage))
+                                {
+                                    <li><a class="dropdown-item" asp-controller="User" asp-action="Index">Users</a></li>
+                                }
+                                @if (HasPermission(enPermissions.Couriers_Manage))
+                                {
+                                    <li><a class="dropdown-item" asp-controller="Courier" asp-action="Index">Couriers</a></li>
+                                }
+                                @if (HasPermission(enPermissions.Roles_Manage))
+                                {
+                                    <li><a class="dropdown-item" asp-controller="Role" asp-action="Index">Roles</a></li>
+                                }
+                            </ul>
+                        </li>
+                    }
+
+                    @* ================= Master Data ================= *@
+                    @if (
+                                    HasPermission(enPermissions.Products_Manage) ||
+                                    HasPermission(enPermissions.Customers_Manage) ||
+                                    HasPermission(enPermissions.ShippingProviders_Manage)
+                                    )
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle"
+                               href="#"
+                               data-bs-toggle="dropdown">
+                                Master Data
+                            </a>
+                            <ul class="dropdown-menu">
+                                @if (HasPermission(enPermissions.Products_Manage))
+                                {
+                                    <li><a class="dropdown-item" asp-controller="Product" asp-action="Index">Products</a></li>
+                                }
+                                @if (HasPermission(enPermissions.Customers_Manage))
+                                {
+                                    <li><a class="dropdown-item" asp-controller="Customer" asp-action="Index">Customers</a></li>
+                                }
+                                @if (HasPermission(enPermissions.ShippingProviders_Manage))
+                                {
+                                    <li><a class="dropdown-item" asp-controller="ShippingProvider" asp-action="Index">Shipping Providers</a></li>
+                                }
+                            </ul>
+                        </li>
+                    }
+
+                    @* ================= Orders ================= *@
+                    @if (
+                                    HasPermission(enPermissions.Orders_UsersViewAssigned) ||
+                                    HasPermission(enPermissions.OrderReturns_View) ||
+                                    HasPermission(enPermissions.Payments_View)
+                                    )
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle"
+                               href="#"
+                               data-bs-toggle="dropdown">
+                                Orders
+                            </a>
+                            <ul class="dropdown-menu">
+                                @if (HasPermission(enPermissions.Orders_UsersViewAssigned))
+                                {
+                                    <li>
+                                        <a class="dropdown-item"
+                                           asp-controller="Order"
+                                           asp-action="ManageAssignedOrders">
+                                            Manage Orders
+                                        </a>
+                                    </li>
+                                }
+                                @if (HasPermission(enPermissions.OrderReturns_View))
+                                {
+                                    <li><a class="dropdown-item" asp-controller="OrderReturn" asp-action="Index">Returns</a></li>
+                                }
+                                @if (HasPermission(enPermissions.Payments_View))
+                                {
+                                    <li><a class="dropdown-item" asp-controller="Payment" asp-action="Index">Payments</a></li>
+                                }
+                            </ul>
+                        </li>
+                    }
+
+                    @* ================= Shipments ================= *@
+                    @if (HasPermission(enPermissions.Shipments_ViewAvailableOrders) ||
+                         HasPermission(enPermissions.Shipments_ManageCourierOrders))
+                    {
+                        <li class="nav-item dropdown shipment-nav">
+                            <a class="nav-link dropdown-toggle shipment-link"
+                               href="#"
+                               data-bs-toggle="dropdown"
+                               role="button"
+                               aria-expanded="false">
+
+                                @if (HasPermission(enPermissions.Shipments_ManageCourierOrders))
+                                {
+                                    <span class="shipment-icon-wrapper">
+                                        <img src="~/Images/order.png" alt="Shipments" />
+                                        <span id="orderCount" class="shipment-badge">0</span>
+                                    </span>
+                                }
+
+                                <span class="shipment-text">Shipments</span>
+                            </a>
+
+                            <ul class="dropdown-menu">
+                                @if (HasPermission(enPermissions.Shipments_ViewAvailableOrders))
+                                {
+                                    <li>
+                                        <a class="dropdown-item"
+                                           asp-controller="Shipment"
+                                           asp-action="AvailableOrdersForAssign">
+                                            Available Orders
+                                        </a>
+                                    </li>
+                                }
+
+                                @if (HasPermission(enPermissions.Shipments_ManageCourierOrders))
+                                {
+                                    <li>
+                                        <a class="dropdown-item"
+                                           asp-controller="Shipment"
+                                           asp-action="CourierAssignedOrders">
+                                            My Shipments
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        </li>
+
+                    }
+
+                    @* ================= Profile ================= *@
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="User" asp-action="EditProfile">
+                            Profile
+                        </a>
+                    </li>
+
+                    @* ================= Logout ================= *@
+                    <li class="nav-item">
+                        <a href="javascript:void(0)"
+                           class="nav-link"
+                           onclick="document.getElementById('logoutForm').submit();">
+                            Logout
+                        </a>
+
+                        <form id="logoutForm"
+                              asp-controller="Account"
+                              asp-action="Logout"
+                              method="post"
+                              class="d-none">
+                        </form>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Account" asp-action="Login">
+                            Login
+                        </a>
+                    </li>
+                }
+
+                @* ================= Cart ================= *@
+                @if (cartId.HasValue)
+                {
+                    <li class="nav-item cart-nav">
+                        <a class="nav-link cart-link"
+                           asp-controller="Cart"
+                           asp-action="Details">
+
+                            <span class="cart-icon-wrapper">
+                                <img src="~/Images/cart.png" alt="Cart" />
+                                <span id="itemCount" class="cart-badge">0</span>
+                            </span>
+
+                            <span class="cart-text">Cart</span>
+                        </a>
+                    </li> 
+                }
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
